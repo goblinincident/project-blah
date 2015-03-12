@@ -64,6 +64,7 @@ namespace pb
 #include <pb\Camera.h>
 #include <pb\CameraFly.h>
 #include <pb\Grid.h>
+#include <pb\Dummy.h>
 #include <pb\Time.h>
 
 class ProjectBlah
