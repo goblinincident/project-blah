@@ -57,6 +57,9 @@
     <ClCompile Include="pb\Dummy.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="tutorials\Cameras_and_Projections.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pb\Camera.h">

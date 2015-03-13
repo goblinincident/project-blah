@@ -9,7 +9,7 @@ namespace pb
 		
 	public:
 		Dummy(const char* name = "dummy");
-
+		
 		void Update(); // virtual
 	};
 

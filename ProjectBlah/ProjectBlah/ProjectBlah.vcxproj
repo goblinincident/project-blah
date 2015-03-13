@@ -90,6 +90,7 @@
     <ClCompile Include="ProjectBlah.cpp" />
     <ClCompile Include="pb\Time.cpp" />
     <ClCompile Include="pb\Window.cpp" />
+    <ClCompile Include="tutorials\Cameras_and_Projections.cpp" />
     <ClCompile Include="tutorials\Playground.cpp" />
   </ItemGroup>
   <ItemGroup>
