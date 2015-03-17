@@ -12,7 +12,7 @@
 
 namespace tinyobj {
 
-typedef struct {
+typedef struct material_t {
   std::string name;
 
   float ambient[3];
@@ -41,7 +41,7 @@ typedef struct {
   std::vector<int> material_ids; // per-mesh material ID
 } mesh_t;
 
-typedef struct {
+typedef struct shape_t{
   std::string name;
   mesh_t mesh;
 } shape_t;

@@ -12,7 +12,7 @@ namespace pb
 {
 	CameraFly::CameraFly(const char* name) : Camera(name),
 		move_speed(10),
-		rotate_speed(2),
+		rotate_speed(6),
 		first_press_(true)
 	{}
 

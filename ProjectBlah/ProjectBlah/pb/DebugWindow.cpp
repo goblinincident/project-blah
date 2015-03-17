@@ -13,7 +13,10 @@ namespace pb
 		if (bar != nullptr) return;
 
 		bar = TwNewBar(name);
-		std::string bar_setting = "'"; bar_setting += name; bar_setting += "' ";
+		std::string bar_setting = "'"; 
+		bar_setting += name; 
+
+		bar_setting += "' ";
 		bar_setting +=
 			"refresh=0.5 "
 			"position='0 0' "
