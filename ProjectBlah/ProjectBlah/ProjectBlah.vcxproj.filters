@@ -72,9 +72,6 @@
     <ClCompile Include="pb\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pb\VertexObjectData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pb\Camera.h">
@@ -114,9 +111,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pb\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pb\VertexObjectData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

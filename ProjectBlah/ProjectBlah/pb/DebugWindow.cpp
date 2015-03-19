@@ -1,18 +1,18 @@
 
 #include <ant\AntTweakBar.h>
 #include <pb\Window.h>
-
+#include <string>
 #include <pb\DebugWindow.h>
+
+using namespace std;
 
 namespace pb
 {
-
-
-	void DebugWindow::InititializeDebugWindow(const char* name)
+	void DebugWindow::InititializeDebugWindow(string name)
 	{
 		if (bar != nullptr) return;
 
-		bar = TwNewBar(name);
+		bar = TwNewBar(name.c_str());
 		std::string bar_setting = "'"; 
 		bar_setting += name; 
 

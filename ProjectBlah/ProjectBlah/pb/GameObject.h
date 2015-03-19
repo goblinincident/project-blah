@@ -1,7 +1,7 @@
 
 
 #pragma once
-
+#include <string>
 #include <list>
 #include <glm\glm.hpp>
 
@@ -37,7 +37,7 @@ namespace pb
 
 		std::list<GameObject*> children;
 
-		const char* name;
+		std::string name;
 
 		glm::vec3 position_local;
 		glm::mat4 position_matrix_local;

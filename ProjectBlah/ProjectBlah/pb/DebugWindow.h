@@ -13,6 +13,6 @@ namespace pb
 		virtual void OpenDebugWindow() = 0;
 		virtual void CloseDebugWindow() = 0;
 	protected:
-		virtual void InititializeDebugWindow(const char* name);
+		virtual void InititializeDebugWindow(std::string name);
 	};
 };

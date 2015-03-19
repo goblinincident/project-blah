@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <string>
 #include <pb\GameObject.h>
 #include <glm\glm.hpp>
 #include <vector>
@@ -17,17 +18,17 @@ namespace pb
 		std::vector<tinyobj::shape_t>* shapes_;
 		std::vector<tinyobj::material_t>* materials_;
 
-		const char* dir_;
-		const char* obj_path_;
+		std::string dir_;
+		std::string obj_path_;
 
 	public:
 
-		ObjMesh(const char* name = "obj mesh", const char* obj_path = "./data/mesh/bunny.obj");
+		ObjMesh(const char* name = "obj mesh", std::string obj_path = "./data/mesh/bunny.obj");
 
 
 	private:
 
-		const char* get_dir_from_path(const char* obj_path);
+		std::string get_dir_from_path(std::string obj_path);
 	};
 
 

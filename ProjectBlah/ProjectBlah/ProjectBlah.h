@@ -66,6 +66,7 @@ namespace pb
 #include <pb\Grid.h>
 #include <pb\Dummy.h>
 #include <pb\Time.h>
+#include <pb\Material.h>
 
 class ProjectBlah
 {

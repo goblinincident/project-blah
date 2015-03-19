@@ -1,9 +1,0 @@
-#version 410
-
-
-uniform sampler2D diffuseTexture;
-
-void main()
-{
-  gl_FragColor = vec4(0,1,1,1);
-};

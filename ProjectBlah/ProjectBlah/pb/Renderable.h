@@ -13,6 +13,9 @@ namespace pb
 
 	class Renderable : virtual public GameObject
 	{
+
+		friend class Material;
+
 	protected:
 
 		/** @brief Override to set data for mesh.
@@ -39,15 +42,27 @@ namespace pb
 
 	private:
 
+		Material* material_ = nullptr;
+
+
+
+		glm::mat4 model_view_projection_;
+		unsigned int model_view_projection_id_;
+
 
 		unsigned int* index_data_;
+		unsigned int index_data_count_;
+		unsigned int index_buffer_;
 
-		unsigned int vao_;
+		glm::vec4* position_data_;
+		unsigned int position_data_count_;
+		unsigned int position_buffer_;
+
+	
+
+		/// @todo Put the rest of the possible vertex info here
 
 
-		VertexObjectData* vo_data_;
-
-		Material* material_ = nullptr;
 
 	};
 

@@ -25,6 +25,9 @@ ProjectBlah::ProjectBlah()
 
 	ogl_LoadFunctions();
 
+	pb::Material::default_material = new pb::Material();
+
+
 	Gizmos::create();
 }
 
@@ -65,6 +68,7 @@ void ProjectBlah::Run()
 
 ProjectBlah::~ProjectBlah()
 {
+	delete pb::Material::default_material;
 	delete pb::Camera::default_camera_;
 	delete pb::GameObject::root_node_;
 	delete pb::Window::window_;

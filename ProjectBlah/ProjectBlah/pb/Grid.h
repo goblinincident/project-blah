@@ -1,6 +1,6 @@
 
 #pragma once
-
+#include <string>
 #include <pb\GameObject.h>
 #include <glm\glm.hpp>
 

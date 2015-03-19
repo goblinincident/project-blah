@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 
+#include <glm\glm.hpp>
 #include <aie\gl_core_4_4.h>
 #include <glfw\glfw3.h>
 
@@ -12,17 +13,50 @@
 #include <pb\Material.h>
 
 using namespace std;
+using namespace glm;
 
 namespace pb
 {
-	Material Material::default_material = Material();
+	Material* Material::default_material = nullptr;
 
 
-	unsigned int Material::CreateVBO(VertexObjectData* vo_data)
+	void Material::CreateBuffersForRenderable(Renderable* renderable)
 	{
+		if (uniform_flags_ & UniformFlags::UNIFORM_MVP)
+		{
+			glGetUniformLocation(renderable->model_view_projection_id_, "MVP");
+		}
 
 
+		glGenBuffers(1, &renderable->position_buffer_);
+		glBindBuffer(GL_ARRAY_BUFFER, renderable->position_buffer_);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(renderable->position_data_), renderable->position_data_, GL_STATIC_DRAW);
+
+
+		glGenBuffers(1, &renderable->index_buffer_);
+		glBindFramebuffer(GL_ELEMENT_ARRAY_BUFFER, renderable->index_buffer_);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(renderable->index_data_), renderable->index_data_, GL_STATIC_DRAW);
 	}
+
+	void Material::DrawRenderable(Renderable* renderable)
+	{
+		glUseProgram(shader_program_id_);
+
+
+		if (uniform_flags_ & UniformFlags::UNIFORM_MVP)
+			glUniformMatrix4fv(renderable->model_view_projection_id_, 1, GL_FALSE, &renderable->model_view_projection_[0][0]);
+
+
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, renderable->position_buffer_);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+
+		glBindFramebuffer(GL_ELEMENT_ARRAY_BUFFER, renderable->index_buffer_);
+
+		glDrawElements(GL_TRIANGLES, sizeof(renderable->index_data_) / sizeof(unsigned int), GL_UNSIGNED_INT, (void*)0);
+	}
+
 
 
 	Material::Material()
@@ -31,26 +65,26 @@ namespace pb
 
 	}
 
-	void Material::SetShader(const char* vertex_shader_path, const char* fragment_shader_path, unsigned int attribute_flags, unsigned int uniform_flags)
+	void Material::SetShader(string vertex_shader_path, string fragment_shader_path, unsigned int attribute_flags, unsigned int uniform_flags)
 	{
 		attribute_flags_ = attribute_flags;
 		uniform_flags_ = uniform_flags;
 
 
 
-		if (vertex_shader_path == nullptr)
+		if (vertex_shader_path.empty())
 			vertex_shader_path_ = "./data/shader/basic_position.vert.glsl";
 
-		if (fragment_shader_path == nullptr)
+		if (fragment_shader_path.empty())
 			fragment_shader_path_ = "./data/shader/solid_purple.frag.glsl";
 
 
 
 		vertex_shader_code_ = read_shader(vertex_shader_path_);
-		GLuint vertex_shader_id_ = load_shader(vertex_shader_code_, GL_VERTEX_SHADER);
+		GLuint vertex_shader_id_ = load_shader(vertex_shader_code_.c_str(), GL_VERTEX_SHADER);
 
 		fragment_shader_code_ = read_shader(fragment_shader_path_);
-		GLuint fragment_shader_id_ = load_shader(fragment_shader_code_, GL_FRAGMENT_SHADER);
+		GLuint fragment_shader_id_ = load_shader(fragment_shader_code_.c_str(), GL_FRAGMENT_SHADER);
 
 
 
@@ -84,7 +118,7 @@ namespace pb
 
 		glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
 		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
-		if (log_length > 0){
+		if (log_length > 1){
 			vector<char> err_msg(log_length + 1);
 			glGetShaderInfoLog(shader_id, log_length, NULL, &err_msg[0]);
 			printf("%s\n", &err_msg[0]);
@@ -94,7 +128,7 @@ namespace pb
 		return shader_id;
 	}
 
-	const char* Material::read_shader(const char* shader_path)
+	string Material::read_shader(string shader_path)
 	{
 		string shader_code;
 		ifstream shader_stream(shader_path, ios::in);
@@ -119,7 +153,7 @@ namespace pb
 
 		glGetProgramiv(program_id, GL_LINK_STATUS, &result);
 		glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &log_length);
-		if (log_length > 0){
+		if (log_length > 1){
 			std::vector<char> err_msg(log_length + 1);
 			glGetProgramInfoLog(program_id, log_length, NULL, &err_msg[0]);
 			printf("%s\n", &err_msg[0]);
