@@ -6,13 +6,12 @@
 
 
 using namespace glm;
+using namespace std;
 
 namespace pb
 {
 
-	Renderable::Renderable(const char* name) : GameObject(name),
-		index_data_(nullptr),
-		position_data_(nullptr)
+	Renderable::Renderable(const char* name) : GameObject(name)
 	{
 		SetVertexObjectData();
 	}
@@ -29,8 +28,9 @@ namespace pb
 
 
 		// Vertex data //
-		position_data_count_ = 8;
-		position_data_ = new vec4[position_data_count_]; /// @bug Initializer list is fucked for vec4 and vs2013
+		//position_data_ = new vec4[position_data_count_]; /// @bug Initializer list is fucked for vec4 and vs2013
+
+		position_data_ = vector<vec4>(8);
 
 		position_data_[0] = vec4(-.5f, .5f, .5f, 1.0f);
 		position_data_[1] = vec4(.5f, .5f, .5f, 1.0f);
@@ -51,8 +51,7 @@ namespace pb
 		unsigned int tl_b = 4; unsigned int tr_b = 5;
 		unsigned int bl_b = 6; unsigned int br_b = 7;
 
-		index_data_count_ = 6 * 2 * 3;
-		index_data_ = new unsigned int[index_data_count_]
+		index_data_ = vector<unsigned int>
 		{
 			tl_f, tr_f, bl_f, tr_f, br_f, bl_f,  // front face
 				bl_f, bl_b, tl_b, tl_b, tl_f, bl_f, // left face

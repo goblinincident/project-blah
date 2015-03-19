@@ -19,19 +19,19 @@ namespace pb
 		* this material.
 		* (called by Renderable)
 		**/
-		void CreateBuffersForRenderable(Renderable* renderable);
+		void CreateBuffersForRenderable(Renderable* r);
 
-		void DrawRenderable(Renderable* renderable);
+		void DrawRenderable(Renderable* r);
 
 	public:
 
-		enum AttributeFlags
+		enum Attributes
 		{
 			ATTRIBUTE_NONE = 0,
 			ATTRIBUTE_POSITION = 1 << 0
 		};
 
-		enum UniformFlags
+		enum Uniforms
 		{
 			UNIFORM_NONE = 0,
 			UNIFORM_MVP = 1 << 0
@@ -44,8 +44,8 @@ namespace pb
 		void SetShader(
 			std::string vertex_shader_path = "",
 			std::string fragment_shader_path = "",
-			unsigned int attribute_flags = AttributeFlags::ATTRIBUTE_POSITION,
-			unsigned int uniform_flags = UniformFlags::UNIFORM_MVP);
+			unsigned int attribute_flags = Attributes::ATTRIBUTE_POSITION,
+			unsigned int uniform_flags = Uniforms::UNIFORM_MVP);
 
 
 	private:

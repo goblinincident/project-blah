@@ -20,41 +20,31 @@ namespace pb
 	Material* Material::default_material = nullptr;
 
 
-	void Material::CreateBuffersForRenderable(Renderable* renderable)
+	void Material::CreateBuffersForRenderable(Renderable* r)
 	{
-		if (uniform_flags_ & UniformFlags::UNIFORM_MVP)
-		{
-			glGetUniformLocation(renderable->model_view_projection_id_, "MVP");
-		}
+		glBindAttribLocation(shader_program_id_, Attributes::ATTRIBUTE_POSITION, "Position");
 
 
-		glGenBuffers(1, &renderable->position_buffer_);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable->position_buffer_);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(renderable->position_data_), renderable->position_data_, GL_STATIC_DRAW);
+		glGenBuffers(1, &r->position_buffer_id_);
 
-
-		glGenBuffers(1, &renderable->index_buffer_);
-		glBindFramebuffer(GL_ELEMENT_ARRAY_BUFFER, renderable->index_buffer_);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(renderable->index_data_), renderable->index_data_, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Material::DrawRenderable(Renderable* renderable)
+	void Material::DrawRenderable(Renderable* r)
 	{
 		glUseProgram(shader_program_id_);
 
+		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
 
-		if (uniform_flags_ & UniformFlags::UNIFORM_MVP)
-			glUniformMatrix4fv(renderable->model_view_projection_id_, 1, GL_FALSE, &renderable->model_view_projection_[0][0]);
+		glEnableVertexAttribArray(Attributes::ATTRIBUTE_POSITION);
 
+		glVertexAttribPointer(Attributes::ATTRIBUTE_POSITION, 1, GL_FLOAT, GL_FALSE, 0, 0);
+	
 
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, renderable->position_buffer_);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-
-		glBindFramebuffer(GL_ELEMENT_ARRAY_BUFFER, renderable->index_buffer_);
-
-		glDrawElements(GL_TRIANGLES, sizeof(renderable->index_data_) / sizeof(unsigned int), GL_UNSIGNED_INT, (void*)0);
+	
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 
 
@@ -98,8 +88,8 @@ namespace pb
 		check_shader_program(shader_program_id_);
 
 
-		glDeleteShader(vertex_shader_id_);
-		glDeleteShader(fragment_shader_id_);
+		//glDeleteShader(vertex_shader_id_);
+		//glDeleteShader(fragment_shader_id_);
 	}
 
 

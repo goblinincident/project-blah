@@ -2,7 +2,7 @@
 
 #include <glm\glm.hpp>
 #include <pb\GameObject.h>
-
+#include <vector>
 
 class ProjectBlah;
 
@@ -50,13 +50,11 @@ namespace pb
 		unsigned int model_view_projection_id_;
 
 
-		unsigned int* index_data_;
-		unsigned int index_data_count_;
-		unsigned int index_buffer_;
+		std::vector<unsigned int> index_data_;
+		unsigned int index_buffer_id_;
 
-		glm::vec4* position_data_;
-		unsigned int position_data_count_;
-		unsigned int position_buffer_;
+		std::vector<glm::vec4> position_data_;
+		unsigned int position_buffer_id_;
 
 	
 
