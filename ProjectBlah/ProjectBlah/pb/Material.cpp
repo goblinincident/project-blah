@@ -25,26 +25,28 @@ namespace pb
 		glBindAttribLocation(shader_program_id_, Attributes::ATTRIBUTE_POSITION, "Position");
 
 
-		glGenBuffers(1, &r->position_buffer_id_);
+		//glGenBuffers(1, &r->position_buffer_id_);
 
-		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
-		glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		//glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void Material::DrawRenderable(Renderable* r)
 	{
-		glUseProgram(shader_program_id_);
+		
+		//glUseProgram(shader_program_id_);
 
-		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		////glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		//glBindVertexBuffer(1, 1, r->position_buffer_id_, 4);
 
-		glEnableVertexAttribArray(Attributes::ATTRIBUTE_POSITION);
+		//glEnableVertexAttribArray(Attributes::ATTRIBUTE_POSITION);
 
-		glVertexAttribPointer(Attributes::ATTRIBUTE_POSITION, 1, GL_FLOAT, GL_FALSE, 0, 0);
+		//glVertexAttribPointer(Attributes::ATTRIBUTE_POSITION, 1, GL_FLOAT, GL_FALSE, 0, 0);
 	
 
 	
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 
 

@@ -14,7 +14,7 @@ namespace tutorials
 		pb::Renderable render_test;
 
 
-		pb::Grid grid;
+		//pb::Grid grid;
 		pb::CameraFly cam;
 
 		Playground() :render_test() {}
@@ -27,8 +27,8 @@ namespace tutorials
 
 		void Initialize()
 		{
-			cam.OpenDebugWindow();
-			grid.OpenDebugWindow();
+			//cam.OpenDebugWindow();
+			//grid.OpenDebugWindow();
 		}
 
 		void Update()
