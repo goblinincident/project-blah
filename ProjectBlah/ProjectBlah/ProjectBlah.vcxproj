@@ -109,6 +109,7 @@
     <ClInclude Include="pb\Renderable.h" />
     <ClInclude Include="pb\Time.h" />
     <ClInclude Include="pb\AntTweakHelper.h" />
+    <ClInclude Include="pb\Vertex.h" />
     <ClInclude Include="pb\Window.h" />
     <ClInclude Include="ProjectBlah.h" />
   </ItemGroup>

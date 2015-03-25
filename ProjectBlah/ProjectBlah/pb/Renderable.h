@@ -25,9 +25,7 @@ namespace pb
 
 
 		/** @brief Sets object to render with desired material.**/
-		void SetMaterial(Material& material);
-
-
+		void SetMaterial(Material* material);
 
 
 
@@ -40,7 +38,7 @@ namespace pb
 
 		void Draw();
 
-	private:
+	protected:
 
 		Material* material_ = nullptr;
 
@@ -50,11 +48,15 @@ namespace pb
 		unsigned int model_view_projection_id_;
 
 
+		unsigned int vertex_array_object_;
+
 		std::vector<unsigned int> index_data_;
 		unsigned int index_buffer_id_;
 
 		std::vector<glm::vec4> position_data_;
 		unsigned int position_buffer_id_;
+
+
 
 	
 

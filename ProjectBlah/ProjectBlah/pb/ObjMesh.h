@@ -2,7 +2,7 @@
 #pragma once
 
 #include <string>
-#include <pb\GameObject.h>
+#include <pb\Renderable.h>
 #include <glm\glm.hpp>
 #include <vector>
 
@@ -13,7 +13,7 @@ namespace tinyobj{ struct shape_t; struct material_t; };
 namespace pb
 {
 
-	class ObjMesh : public GameObject
+	class ObjMesh : public Renderable
 	{
 		std::vector<tinyobj::shape_t>* shapes_;
 		std::vector<tinyobj::material_t>* materials_;
@@ -21,9 +21,11 @@ namespace pb
 		std::string dir_;
 		std::string obj_path_;
 
+		void SetVertexObjectData(); // virtual
+
 	public:
 
-		ObjMesh(const char* name = "obj mesh", std::string obj_path = "./data/mesh/bunny.obj");
+		ObjMesh(const char* name = "obj mesh", std::string obj_path = "./data/obj/bunny.obj");
 
 
 	private:

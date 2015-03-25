@@ -113,5 +113,8 @@
     <ClInclude Include="pb\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pb\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

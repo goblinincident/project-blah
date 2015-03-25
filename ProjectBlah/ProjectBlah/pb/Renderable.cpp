@@ -14,12 +14,14 @@ namespace pb
 	Renderable::Renderable(const char* name) : GameObject(name)
 	{
 		SetVertexObjectData();
+		SetMaterial(Material::default_material);
 	}
 
 	Renderable::~Renderable()
 	{
 
 	}
+
 
 
 
@@ -63,18 +65,17 @@ namespace pb
 	}
 
 
-	void Renderable::SetMaterial(Material& material)
+	void Renderable::SetMaterial(Material* material)
 	{
-		material_ = &material;
+		material_ = material;
 		material_->CreateBuffersForRenderable(this);
 	}
 
 	void Renderable::Draw()
 	{
-		model_view_projection_ = transform_matrix_world * Camera::active_camera->view * Camera::active_camera->projection;
+		model_view_projection_ = Camera::active_camera->projection *  Camera::active_camera->view * transform_matrix_world;
 
-		if (material_ == nullptr)
-			SetMaterial(*Material::default_material);
+		assert(material_ != nullptr && "Material Not set before rendering!");
 
 		material_->DrawRenderable(this);
 	}

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <glm\glm.hpp>
+#include <glm\ext.hpp>
 #include <aie\gl_core_4_4.h>
 #include <glfw\glfw3.h>
 
@@ -22,31 +23,46 @@ namespace pb
 
 	void Material::CreateBuffersForRenderable(Renderable* r)
 	{
-		glBindAttribLocation(shader_program_id_, Attributes::ATTRIBUTE_POSITION, "Position");
+		glGenBuffers(1, &r->position_buffer_id_);
+		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
 
 
-		//glGenBuffers(1, &r->position_buffer_id_);
+		glGenBuffers(1, &r->index_buffer_id_);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->index_buffer_id_);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, r->index_data_.size() * sizeof(unsigned int), &r->index_data_[0], GL_STATIC_DRAW);
 
-		//glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
-		//glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+		glGenVertexArrays(1, &r->vertex_array_object_);
+		glBindVertexArray(r->vertex_array_object_);
+
+
+		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(1);
+
+
+		r->model_view_projection_id_ = glGetUniformLocation(shader_program_id_, "MVP");
+
+
 	}
 
 	void Material::DrawRenderable(Renderable* r)
 	{
 		
-		//glUseProgram(shader_program_id_);
+		glUseProgram(shader_program_id_);
 
-		////glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
-		//glBindVertexBuffer(1, 1, r->position_buffer_id_, 4);
 
-		//glEnableVertexAttribArray(Attributes::ATTRIBUTE_POSITION);
+		glUniformMatrix4fv(r->model_view_projection_id_, 1, GL_FALSE, value_ptr(r->model_view_projection_));
 
-		//glVertexAttribPointer(Attributes::ATTRIBUTE_POSITION, 1, GL_FLOAT, GL_FALSE, 0, 0);
-	
 
-	
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(r->vertex_array_object_);
+		
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->index_buffer_id_);
+		
+		glDrawElements(GL_TRIANGLES, r->index_data_.size(), GL_UNSIGNED_INT, 0);
 	}
 
 
@@ -54,7 +70,6 @@ namespace pb
 	Material::Material()
 	{
 		SetShader(/*pass from material*/);
-
 	}
 
 	void Material::SetShader(string vertex_shader_path, string fragment_shader_path, unsigned int attribute_flags, unsigned int uniform_flags)
@@ -88,10 +103,6 @@ namespace pb
 
 		glLinkProgram(shader_program_id_);
 		check_shader_program(shader_program_id_);
-
-
-		//glDeleteShader(vertex_shader_id_);
-		//glDeleteShader(fragment_shader_id_);
 	}
 
 
