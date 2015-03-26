@@ -22,6 +22,8 @@ namespace pb
 		std::string dir_;
 		std::string obj_path_;
 
+	protected:
+		void Initialize(); // virtual
 
 	public:
 
@@ -34,8 +36,6 @@ namespace pb
 	private:
 
 		std::vector<Renderable*> renderable_shapes_;
-
-		void set_object_data();
 
 		std::string get_dir_from_path(std::string obj_path);
 	};

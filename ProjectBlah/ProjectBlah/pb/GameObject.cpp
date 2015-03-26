@@ -19,6 +19,11 @@ namespace pb
 
 	void GameObject::UpdateAllGameObjects(GameObject* go)
 	{
+		if (go->initialized_ == false){
+			go->Initialize();
+			go->initialized_ = true;
+		}
+
 		if (go != GameObject::root_node_)
 		{
 			go->UpdateTransform();
@@ -62,9 +67,9 @@ namespace pb
 		{
 			DetachParent();
 
-			for (auto cld_it = children.begin(); cld_it != children.end(); cld_it++)
+			while (children.size() != 0)
 			{
-				(*cld_it)->DetachParent();
+				(*children.begin())->DetachParent();
 			}
 
 			all_game_objects.remove(this);
@@ -95,9 +100,12 @@ namespace pb
 
 		assert(parent != nullptr && "Don't know how this happened!");
 
-		parent->DettachChild(this);
+		if (parent != root_node_)
+		{
+			parent->DettachChild(this);
 
-		parent = root_node_;
+			parent = root_node_;
+		}
 	}
 
 
@@ -149,7 +157,7 @@ namespace pb
 	{
 		InititializeDebugWindow(name);
 
-		
+
 		// tewakable
 		TwAddVarRW(bar, "draw tran?", TW_TYPE_BOOL32, &draw_transform_,
 			"group='Game Object' "
@@ -158,7 +166,7 @@ namespace pb
 		TwAddVarRW(bar, "local_pos_x", TW_TYPE_FLOAT, &position_local.x, "label='x' group='position local'");
 		TwAddVarRW(bar, "local_pos_y", TW_TYPE_FLOAT, &position_local.y, "label='y' group='position local'");
 		TwAddVarRW(bar, "local_pos_z", TW_TYPE_FLOAT, &position_local.z, "label='z' group='position local'");
-						 																		
+
 		TwAddVarRW(bar, "local_rot_x", TW_TYPE_FLOAT, &rotation_local.x, "label='x' group='rotation local'");
 		TwAddVarRW(bar, "local_rot_y", TW_TYPE_FLOAT, &rotation_local.y, "label='y' group='rotation local'");
 		TwAddVarRW(bar, "local_rot_z", TW_TYPE_FLOAT, &rotation_local.z, "label='z' group='rotation local'");

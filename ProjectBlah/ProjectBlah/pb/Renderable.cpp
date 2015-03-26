@@ -13,19 +13,6 @@ namespace pb
 
 	Renderable::Renderable(const char* name) : GameObject(name)
 	{
-		set_renderable_defaults();
-	}
-
-	Renderable::~Renderable()
-	{
-
-	}
-
-
-
-
-	void Renderable::set_renderable_defaults()
-	{
 		// Vertex data //
 		position_data_ = vector<vec4>(8);
 
@@ -59,6 +46,20 @@ namespace pb
 		};
 
 		SetMaterial(Material::default_material);
+	}
+
+
+	Renderable::~Renderable()
+	{
+
+	}
+
+
+
+
+	void Renderable::set_renderable_defaults()
+	{
+
 	}
 
 

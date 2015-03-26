@@ -48,10 +48,9 @@ void ProjectBlah::Run()
 
 		pb::Time::Update();
 
-		Update(); // virtual
-
 		pb::GameObject::UpdateAllGameObjects(pb::GameObject::root_node_);
 
+		Update(); // virtual
 
 		Gizmos::draw(cam->projection, cam->view);
 

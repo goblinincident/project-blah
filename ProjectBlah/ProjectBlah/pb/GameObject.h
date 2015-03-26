@@ -25,6 +25,7 @@ namespace pb
 
 	protected:
 
+		virtual void Initialize(){};
 		virtual void Update(){};
 
 
@@ -78,6 +79,7 @@ namespace pb
 
 		GameObject(const GameObject&){}
 
+		bool initialized_;
 		bool draw_transform_;
 
 		void UpdateTransform();

@@ -24,25 +24,11 @@ namespace pb
 		std::string err = tinyobj::LoadObj(*tiny_shapes_, *materials_, obj_path_.c_str(), dir_.c_str());
 
 		assert(err == "" && !tiny_shapes_->empty() && "Couldn't load obj shapes!");
-
-
-		set_object_data();
 	}
 
 
-	void ObjMesh::Draw()
+	void ObjMesh::Initialize()
 	{
-		for each (Renderable* renderable in renderable_shapes_)
-		{
-			renderable->Draw();
-		}
-	}
-
-
-	void ObjMesh::set_object_data() // virtual
-	{
-
-	
 		for each (tinyobj::shape_t shape in (*tiny_shapes_))
 		{
 			Renderable* renderable = new Renderable("obj shape");
@@ -50,7 +36,7 @@ namespace pb
 
 			// positions //
 			int number_of_verts = shape.mesh.positions.size() / 3;
-	
+
 			renderable->position_data_ = vector<vec4>(number_of_verts);
 			for (int i = 0; i < number_of_verts; i++)
 			{
@@ -73,16 +59,20 @@ namespace pb
 			renderable->SetMaterial(Material::default_material);
 
 
-
-			//this->AttachChild(renderable);
+			//renderable->AttachParent(this);
+			this->AttachChild(renderable);
 			renderable_shapes_.push_back(renderable);
 		}
 
 
+	}
 
-
-
-
+	void ObjMesh::Draw()
+	{
+		for each (Renderable* renderable in renderable_shapes_)
+		{
+			renderable->Draw();
+		}
 	}
 
 
