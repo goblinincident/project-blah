@@ -1,4 +1,53 @@
-﻿  ObjMesh.cpp
-f:\active projects\my aie framework\project-blah-git\projectblah\projectblah\pb\objmesh.cpp(52): warning C4018: '<' : signed/unsigned mismatch
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  ProjectBlah.vcxproj -> F:\ACTIVE PROJECTS\My Aie Framework\project-blah-git\ProjectBlah\/builds/Debug/ProjectBlah.exe
+﻿Build started 26/03/2015 1:45:47 PM.
+     1>Project "C:\Dennis\Project Blah - source_tree\ProjectBlah\ProjectBlah\ProjectBlah.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Dennis\Project Blah - source_tree\ProjectBlah\ProjectBlah\/" /I"C:\Dennis\Project Blah - source_tree\ProjectBlah\/dependencies/" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/" /Fd"C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt aie\Gizmos.cpp pb\Dummy.cpp Main.cpp pb\AntTweakHelper.cpp pb\Camera.cpp pb\CameraFly.cpp pb\DebugWindow.cpp pb\GameObject.cpp pb\Grid.cpp pb\Material.cpp pb\ObjMesh.cpp pb\Renderable.cpp ProjectBlah.cpp pb\Time.cpp pb\Window.cpp tinyobj\tiny_obj_loader.cc tutorials\Cameras_and_Projections.cpp tutorials\Playground.cpp
+         Playground.cpp
+         Cameras_and_Projections.cpp
+         tiny_obj_loader.cc
+         Window.cpp
+         Time.cpp
+         ProjectBlah.cpp
+         Renderable.cpp
+         ObjMesh.cpp
+     1>c:\dennis\project blah - source_tree\projectblah\projectblah\pb\objmesh.cpp(57): warning C4018: '<' : signed/unsigned mismatch
+         Material.cpp
+         Grid.cpp
+         GameObject.cpp
+         DebugWindow.cpp
+         CameraFly.cpp
+         Camera.cpp
+         AntTweakHelper.cpp
+         Main.cpp
+         Dummy.cpp
+         Gizmos.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Dennis\Project Blah - source_tree\ProjectBlah\ProjectBlah\/" /I"C:\Dennis\Project Blah - source_tree\ProjectBlah\/dependencies/" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/" /Fd"C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/vc120.pdb" /Gd /TC /analyze- /errorReport:prompt aie\gl_core_4_4.c
+         gl_core_4_4.c
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Dennis\Project Blah - source_tree\ProjectBlah\/builds/Debug/ProjectBlah.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Dennis\Project Blah - source_tree\ProjectBlah\/dependencies/" opengl32.lib glfw/glfw3.lib ant/AntTweakBar.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Dennis\Project Blah - source_tree\ProjectBlah\/builds/Debug/ProjectBlah.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Dennis\Project Blah - source_tree\ProjectBlah\/builds/Debug/ProjectBlah.lib" /MACHINE:X86 "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Gizmos.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/gl_core_4_4.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Dummy.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Main.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/AntTweakHelper.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Camera.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/CameraFly.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/DebugWindow.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/GameObject.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Grid.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Material.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/ObjMesh.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Renderable.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/ProjectBlah.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Time.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Window.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/tiny_obj_loader.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Cameras_and_Projections.obj"
+         "C:\Dennis\Project Blah - source_tree\ProjectBlah\/obj/Debug/Playground.obj"
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+         ProjectBlah.vcxproj -> C:\Dennis\Project Blah - source_tree\ProjectBlah\/builds/Debug/ProjectBlah.exe
+     1>Done Building Project "C:\Dennis\Project Blah - source_tree\ProjectBlah\ProjectBlah\ProjectBlah.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.39

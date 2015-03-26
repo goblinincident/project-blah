@@ -4,6 +4,7 @@
 
 #include <pb\ObjMesh.h>
 #include <pb\Material.h>
+#include <pb\Renderable.h>
 
 
 #include <tinyobj\tiny_obj_loader.h>
@@ -24,34 +25,42 @@ namespace pb
 
 		assert(err == "" && !shapes_->empty() && "Couldn't load obj shapes!");
 
-		//assert(!materials_.empty() && "Couldn't load materials!");
 
-		SetVertexObjectData();
-
-		SetMaterial(Material::default_material);
+		set_default_object_data();
 	}
 
 
-
-	void ObjMesh::SetVertexObjectData() // virtual
+	void ObjMesh::Draw()
 	{
+		shape_renderable_->Draw();
+	}
+
+
+	void ObjMesh::set_default_object_data() // virtual
+	{
+		shape_renderable_ = new Renderable();
+
+
 		// positions //
 		int number_of_verts = (*shapes_)[0].mesh.positions.size() / 3;
-		position_data_ = vector<vec4>(number_of_verts);
+		shape_renderable_->position_data_ = vector<vec4>(number_of_verts);
 		for (int i = 0; i < number_of_verts; i++)
 		{
-			position_data_[i].x = (*shapes_)[0].mesh.positions[i * 3];
-			position_data_[i].y = (*shapes_)[0].mesh.positions[i * 3 + 1];
-			position_data_[i].z = (*shapes_)[0].mesh.positions[i * 3 + 2];
-			position_data_[i].w = 1;
+			shape_renderable_->position_data_[i].x = (*shapes_)[0].mesh.positions[i * 3];
+			shape_renderable_->position_data_[i].y = (*shapes_)[0].mesh.positions[i * 3 + 1];
+			shape_renderable_->position_data_[i].z = (*shapes_)[0].mesh.positions[i * 3 + 2];
+			shape_renderable_->position_data_[i].w = 1;
 		}
 
 		// indicies //
-		index_data_ = vector<unsigned int>((*shapes_)[0].mesh.indices.size());
+		shape_renderable_->index_data_ = vector<unsigned int>((*shapes_)[0].mesh.indices.size());
 		for (int i = 0; i < (*shapes_)[0].mesh.indices.size(); i++)
 		{
-			index_data_[i] = (*shapes_)[0].mesh.indices[i];
+			shape_renderable_->index_data_[i] = (*shapes_)[0].mesh.indices[i];
 		}
+
+
+		shape_renderable_->SetMaterial(Material::default_material);
 	}
 
 

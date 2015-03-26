@@ -12,18 +12,16 @@ namespace pb
 
 	class Material
 	{
+	public:
 
-		friend class Renderable;
-
-		/** @brief Generates a vertex buffer object for 
+		/** @brief Generates a vertex buffer object for
 		* this material.
 		* (called by Renderable)
 		**/
-		void CreateBuffersForRenderable(Renderable* r);
+		void CreateRequiredBuffers(Renderable* r);
 
 		void DrawRenderable(Renderable* r);
 
-	public:
 
 		enum Attributes
 		{

@@ -21,7 +21,7 @@ namespace pb
 	Material* Material::default_material = nullptr;
 
 
-	void Material::CreateBuffersForRenderable(Renderable* r)
+	void Material::CreateRequiredBuffers(Renderable* r)
 	{
 		glGenBuffers(1, &r->position_buffer_id_);
 		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);

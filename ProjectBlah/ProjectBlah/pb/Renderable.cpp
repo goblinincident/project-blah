@@ -13,8 +13,7 @@ namespace pb
 
 	Renderable::Renderable(const char* name) : GameObject(name)
 	{
-		SetVertexObjectData();
-		SetMaterial(Material::default_material);
+		set_renderable_defaults();
 	}
 
 	Renderable::~Renderable()
@@ -25,13 +24,9 @@ namespace pb
 
 
 
-	void Renderable::SetVertexObjectData()
+	void Renderable::set_renderable_defaults()
 	{
-
-
 		// Vertex data //
-		//position_data_ = new vec4[position_data_count_]; /// @bug Initializer list is fucked for vec4 and vs2013
-
 		position_data_ = vector<vec4>(8);
 
 		position_data_[0] = vec4(-.5f, .5f, .5f, 1.0f);
@@ -62,22 +57,24 @@ namespace pb
 				tl_f, tr_f, tr_b, tr_b, tl_b, tl_f, // top face
 				bl_f, br_f, br_b, br_b, bl_b, bl_f // bottom face
 		};
+
+		
 	}
 
 
 	void Renderable::SetMaterial(Material* material)
 	{
-		material_ = material;
-		material_->CreateBuffersForRenderable(this);
+		active_material_ = material;
+		active_material_->CreateRequiredBuffers(this);
 	}
 
 	void Renderable::Draw()
 	{
 		model_view_projection_ = Camera::active_camera->projection *  Camera::active_camera->view * transform_matrix_world;
 
-		assert(material_ != nullptr && "Material Not set before rendering!");
+		assert(active_material_ != nullptr && "Material Not set before rendering!");
 
-		material_->DrawRenderable(this);
+		active_material_->DrawRenderable(this);
 	}
 
 
