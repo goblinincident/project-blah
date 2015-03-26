@@ -2,7 +2,6 @@
 
 #include <ProjectBlah.h>
 
-
 #include <iostream>
 
 namespace tutorials
@@ -20,7 +19,9 @@ namespace tutorials
 		void Initialize()
 		{
 			//cam.OpenDebugWindow();
-			grid.OpenDebugWindow();
+			//grid.OpenDebugWindow();
+
+			render_test.OpenDebugWindow();
 		}
 
 		void Update()

@@ -16,7 +16,7 @@ namespace pb
 
 	class ObjMesh : public GameObject
 	{
-		std::vector<tinyobj::shape_t>* shapes_;
+		std::vector<tinyobj::shape_t>* tiny_shapes_;
 		std::vector<tinyobj::material_t>* materials_;
 
 		std::string dir_;
@@ -27,13 +27,15 @@ namespace pb
 
 		ObjMesh(const char* name = "obj mesh", std::string obj_path = "./data/obj/bunny.obj");
 
+
 		void Draw();
+
 
 	private:
 
-		Renderable* shape_renderable_;
+		std::vector<Renderable*> renderable_shapes_;
 
-		void set_default_object_data();
+		void set_object_data();
 
 		std::string get_dir_from_path(std::string obj_path);
 	};

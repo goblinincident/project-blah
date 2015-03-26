@@ -60,6 +60,8 @@ namespace pb
 
 		GameObject(const char* name = "unnamed");
 
+		
+
 		~GameObject();
 
 
@@ -73,6 +75,8 @@ namespace pb
 		void CloseDebugWindow(); // virtual
 
 	private:
+
+		GameObject(const GameObject&){}
 
 		bool draw_transform_;
 

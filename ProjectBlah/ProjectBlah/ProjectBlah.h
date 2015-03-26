@@ -67,6 +67,7 @@ namespace pb
 #include <pb\Dummy.h>
 #include <pb\Time.h>
 #include <pb\Material.h>
+#include <pb\Renderable.h>
 #include <pb\ObjMesh.h>
 
 class ProjectBlah

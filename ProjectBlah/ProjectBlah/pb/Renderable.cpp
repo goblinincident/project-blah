@@ -58,7 +58,7 @@ namespace pb
 				bl_f, br_f, br_b, br_b, bl_b, bl_f // bottom face
 		};
 
-		
+		SetMaterial(Material::default_material);
 	}
 
 

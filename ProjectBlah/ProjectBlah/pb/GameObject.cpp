@@ -135,6 +135,16 @@ namespace pb
 
 
 
+	static void TW_CALL SetScaleCallback(const void* value, void* clientData)
+	{
+		static_cast<GameObject*>(clientData)->position_local.x = *static_cast<const float*>(value);
+	}
+
+	static void TW_CALL GetScaleCallback(void* value, void* clienntData)
+	{
+		*static_cast<float*>(value) = static_cast<GameObject*>(clienntData)->position_local.x;
+	}
+
 	void GameObject::OpenDebugWindow()
 	{
 		InititializeDebugWindow(name);
@@ -152,6 +162,8 @@ namespace pb
 		TwAddVarRW(bar, "local_rot_x", TW_TYPE_FLOAT, &rotation_local.x, "label='x' group='rotation local'");
 		TwAddVarRW(bar, "local_rot_y", TW_TYPE_FLOAT, &rotation_local.y, "label='y' group='rotation local'");
 		TwAddVarRW(bar, "local_rot_z", TW_TYPE_FLOAT, &rotation_local.z, "label='z' group='rotation local'");
+
+		TwAddVarCB(bar, "scale_all", TW_TYPE_FLOAT, SetScaleCallback, GetScaleCallback, this, "");
 
 		// readable
 		TwAddVarRO(bar, "world_pos_x", TW_TYPE_FLOAT, &position_world.x, "label='x' group='position world'");
@@ -315,5 +327,6 @@ namespace pb
 		if (draw_transform_)
 			Gizmos::addTransform(transform_matrix_world);
 	}
+
 
 };
