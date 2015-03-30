@@ -3,11 +3,10 @@
 layout(location=1) in vec4 Position;
 
 
-uniform mat4 MVP;
-
+uniform mat4 PVM;
 
 void main()
 {
-	gl_Position = MVP * Position;
+	gl_Position = PVM * Position;
 	//gl_Position = Position;
 }

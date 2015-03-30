@@ -22,10 +22,11 @@ ProjectBlah::ProjectBlah()
 
 	pb::AntTweakHelper::instance_ = new pb::AntTweakHelper();
 
-
 	ogl_LoadFunctions();
 
-	pb::Material::default_material = new pb::Material();
+	pb::TextureManager::instance_ = new pb::TextureManager();
+
+	pb::Material::InitializeStandardMaterials();
 
 
 	Gizmos::create();
@@ -67,13 +68,15 @@ void ProjectBlah::Run()
 
 ProjectBlah::~ProjectBlah()
 {
-	delete pb::Material::default_material;
+	Gizmos::destroy();
+
+	/// @todo delete pb::Material::default_material;
+	delete pb::TextureManager::instance_;
+	delete pb::AntTweakHelper::instance_;
 	delete pb::Camera::default_camera_;
 	delete pb::GameObject::root_node_;
 	delete pb::Window::window_;
-	delete pb::AntTweakHelper::instance_;
-
-	Gizmos::destroy();
+	
 	
 	glfwTerminate();
 }

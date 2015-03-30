@@ -69,6 +69,7 @@ namespace pb
 #include <pb\Material.h>
 #include <pb\Renderable.h>
 #include <pb\ObjMesh.h>
+#include <pb\TextureManager.h>
 
 class ProjectBlah
 {
