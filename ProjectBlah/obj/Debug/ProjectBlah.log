@@ -1,3 +1,0 @@
-﻿  Material.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  ProjectBlah.vcxproj -> F:\ACTIVE PROJECTS\My Aie Framework\project-blah-git-temp\ProjectBlah\/builds/Debug/ProjectBlah.exe
