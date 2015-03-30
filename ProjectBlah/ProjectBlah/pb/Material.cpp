@@ -18,94 +18,174 @@ using namespace glm;
 
 namespace pb
 {
-	Material* Material::default_material = nullptr;
+	Material* Material::StandardMaterials::SolidPurple = nullptr;
+	Material* Material::StandardMaterials::SolidRed = nullptr;
 
 
-	void Material::CreateRequiredBuffers(Renderable* r)
+	void Material::InitializeStandardMaterials()
 	{
-		glGenBuffers(1, &r->position_buffer_id_);
-		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
-		glBufferData(GL_ARRAY_BUFFER, r->position_data_.size() * sizeof(vec4), &r->position_data_[0], GL_STATIC_DRAW);
+		Material* mat;
 
+		mat = new Material();
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, REQUIREMENTS_ATTRIBUTE_POSITION | REQUIREMENTS_ATTRIBUTE_INDEX | REQUIREMENTS_UNIFORM_MVP);
+		mat->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
+		StandardMaterials::SolidRed = mat;
 
-		glGenBuffers(1, &r->index_buffer_id_);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->index_buffer_id_);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, r->index_data_.size() * sizeof(unsigned int), &r->index_data_[0], GL_STATIC_DRAW);
-
-
-
-		glGenVertexArrays(1, &r->vertex_array_object_);
-		glBindVertexArray(r->vertex_array_object_);
-
-
-		glBindBuffer(GL_ARRAY_BUFFER, r->position_buffer_id_);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(1);
-
-
-		r->model_view_projection_id_ = glGetUniformLocation(shader_program_id_, "MVP");
-
-
-	}
-
-	void Material::DrawRenderable(Renderable* r)
-	{
-		
-		glUseProgram(shader_program_id_);
-
-
-		glUniformMatrix4fv(r->model_view_projection_id_, 1, GL_FALSE, value_ptr(r->model_view_projection_));
-
-
-		glBindVertexArray(r->vertex_array_object_);
-		
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->index_buffer_id_);
-		
-		glDrawElements(GL_TRIANGLES, r->index_data_.size(), GL_UNSIGNED_INT, 0);
+		mat = new Material();
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, REQUIREMENTS_ATTRIBUTE_POSITION | REQUIREMENTS_ATTRIBUTE_INDEX | REQUIREMENTS_UNIFORM_MVP);
+		mat->SetShader("./data/shader/solid_purple.frag.glsl", SHADERTYPE_FRAGMENT);
+		StandardMaterials::SolidPurple = mat;
 	}
 
 
 
-	Material::Material()
+	Material::Material() :
+		requirement_flags_(0),
+		shader_data_vertex_(nullptr),
+		shader_data_fragment_(nullptr),
+		shader_data_map(map<const Material::ShaderTpes, Material::shader_data*>({
+			{ SHADERTYPE_VERTEX, nullptr },
+			{ SHADERTYPE_FRAGMENT, nullptr }
+	}))
 	{
-		SetShader(/*pass from material*/);
-	}
-
-	void Material::SetShader(string vertex_shader_path, string fragment_shader_path, unsigned int attribute_flags, unsigned int uniform_flags)
-	{
-		attribute_flags_ = attribute_flags;
-		uniform_flags_ = uniform_flags;
-
-
-
-		if (vertex_shader_path.empty())
-			vertex_shader_path_ = "./data/shader/basic_position.vert.glsl";
-
-		if (fragment_shader_path.empty())
-			fragment_shader_path_ = "./data/shader/solid_purple.frag.glsl";
-
-
-
-		vertex_shader_code_ = read_shader(vertex_shader_path_);
-		GLuint vertex_shader_id_ = load_shader(vertex_shader_code_.c_str(), GL_VERTEX_SHADER);
-
-		fragment_shader_code_ = read_shader(fragment_shader_path_);
-		GLuint fragment_shader_id_ = load_shader(fragment_shader_code_.c_str(), GL_FRAGMENT_SHADER);
-
-
-
 		shader_program_id_ = glCreateProgram();
+	}
 
-		glAttachShader(shader_program_id_, vertex_shader_id_);
-		glAttachShader(shader_program_id_, fragment_shader_id_);
 
+	void Material::BindRenderable(Renderable* r)
+	{
+		if (r->bound_material_ == this)  return;
+
+		if (r->bound_material_ != nullptr)
+			r->bound_material_->bound_renderables_.remove(r);
+
+		bound_renderables_.push_back(r);
+
+		r->bound_material_ = this;
+
+		if (r->vertex_array_object_ == -1)
+			glGenVertexArrays(1, &r->vertex_array_object_);
+
+		ready_requirements(r, requirement_flags_);
+	}
+
+
+	void Material::SetShader(string path, Material::ShaderTpes type, unsigned int requirements)
+	{
+
+		shader_data* data = shader_data_map[type];
+
+		if (data == nullptr)
+			data = new shader_data();
+
+		if (data->path == path) return;
+
+		glDetachShader(shader_program_id_, data->id);
+
+
+		data->path = path;
+		data->code = read_shader(path);
+		data->id = load_shader(data->code.c_str(), type);
+
+		glAttachShader(shader_program_id_, data->id);
+		glDeleteShader(data->id);
 
 		glLinkProgram(shader_program_id_);
 		check_shader_program(shader_program_id_);
+
+
+		activate_requirements(requirements);
+
+		shader_data_map[type] = data;
 	}
 
 
+	void Material::DrawRenderable(Renderable* r, Material::DrawStyle draw_style)
+	{
+		assert(shader_data_map[SHADERTYPE_VERTEX] != nullptr && "No vertex shader loaded!");
+		assert(shader_data_map[SHADERTYPE_FRAGMENT] != nullptr && "No fragment shader loaded!");
+
+
+		glUseProgram(shader_program_id_);
+
+		glBindVertexArray(r->vertex_array_object_);
+
+
+		if (requirement_flags_ & REQUIREMENTS_UNIFORM_MVP)
+		{
+			auto data = &r->uniform_config[REQUIREMENTS_UNIFORM_MVP];
+			glUniformMatrix4fv(data->uniform_location, 1, GL_FALSE, value_ptr(*static_cast<mat4*>(data->data_pointer)));
+		}
+
+
+
+		if (draw_style == DRAWSTYLE_TRIANGLE && r->attribute_config[REQUIREMENTS_ATTRIBUTE_POSITION].data_element_count < 3)
+			draw_style = DRAWSTYLE_POINTS;
+
+
+		if (requirement_flags_ & REQUIREMENTS_ATTRIBUTE_INDEX)
+		{
+			auto data = &r->attribute_config[REQUIREMENTS_ATTRIBUTE_INDEX];
+			glBindBuffer(data->gl_buffer_type, data->buffer_id);
+			glDrawElements(draw_style, data->data_element_count, data->gl_element_type, 0);
+		}
+		else if (requirement_flags_ & REQUIREMENTS_ATTRIBUTE_POSITION)
+		{
+			auto data = &r->attribute_config[REQUIREMENTS_ATTRIBUTE_POSITION];
+			glBindBuffer(data->gl_buffer_type, data->buffer_id);
+			glDrawArrays(draw_style, 0, data->data_element_count);
+		}
+		else
+			assert(!"Attempted to draw with materieal that has no index or position attributes!");
+	}
+
+
+
+	void Material::activate_requirements(unsigned int requirement_flags)
+	{
+		unsigned int new_requirements = (requirement_flags & requirement_flags_) ^ requirement_flags;
+
+		if (new_requirements)
+		{
+			requirement_flags_ = requirement_flags_ | new_requirements;
+			for each (Renderable* r in bound_renderables_)
+				ready_requirements(r, new_requirements);
+		}
+	}
+
+
+	void Material::ready_requirements(Renderable* r, unsigned int attributes)
+	{
+		glBindVertexArray(r->vertex_array_object_);
+
+		for (auto iter = r->attribute_config.begin(); iter != r->attribute_config.end(); iter++)
+		{
+			auto flag = (*iter).first;
+	
+			if (requirement_flags_ & flag)
+			{
+				auto data = &(*iter).second;
+
+				if (data->buffer_id == -1)
+					glGenBuffers(1, &data->buffer_id);
+
+				glBindBuffer(data->gl_buffer_type, data->buffer_id);
+				glBufferData(data->gl_buffer_type, data->data_size, data->data_pointer, GL_STATIC_DRAW);
+				glVertexAttribPointer(data->attribute_location, data->data_sub_element_count, data->gl_element_type, GL_FALSE, 0, 0);
+				glEnableVertexAttribArray(data->attribute_location);
+			}
+		}
+
+		for (auto iter = r->uniform_config.begin(); iter != r->uniform_config.end(); iter++)
+		{
+			auto flag = (*iter).first;
+			if (requirement_flags_ & flag)
+			{
+				auto data = &(*iter).second;
+				data->uniform_location = glGetUniformLocation(shader_program_id_, data->uniform_name.c_str());
+			}
+		}
+	}
 
 
 	unsigned int Material::load_shader(const char* shader_source, unsigned int type)
@@ -164,4 +244,6 @@ namespace pb
 		}
 
 	}
+
+
 };

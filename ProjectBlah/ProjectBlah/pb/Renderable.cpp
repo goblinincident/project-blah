@@ -2,6 +2,8 @@
 
 #include <pb\Camera.h>
 
+#include <aie\gl_core_4_4.h>
+
 #include <pb\Renderable.h>
 
 
@@ -11,43 +13,24 @@ using namespace std;
 namespace pb
 {
 
-	Renderable::Renderable(const char* name) : GameObject(name)
+	static vector<vec4>* balh = new vector<vec4>{ vec4(0, 0, 0, 1) };
+
+	Renderable::Renderable(const char* name) : GameObject(name),
+		attribute_config({
+			{ Material::REQUIREMENTS_ATTRIBUTE_POSITION, Renderable::attribute_data{ 1, GL_ARRAY_BUFFER, GL_FLOAT, 1, 4, sizeof(vec4), -1, &((*new vector<vec4>{ vec4(0, 0, 0, 1) })[0]) } },
+			{ Material::REQUIREMENTS_ATTRIBUTE_INDEX, Renderable::attribute_data{ 2, GL_ELEMENT_ARRAY_BUFFER, GL_UNSIGNED_INT,1, 1, sizeof(unsigned int), -1, &((*new vector<unsigned int>{ 0 })[0]) } }	}),
+		uniform_config({
+			{ Material::REQUIREMENTS_UNIFORM_MVP, Renderable::uniform_data{ "PVM",-1, new mat4(1.0f) } }
+			})
 	{
-		// Vertex data //
-		position_data_ = vector<vec4>(8);
+		vertex_array_object_ = -1;
+	};
 
-		position_data_[0] = vec4(-.5f, .5f, .5f, 1.0f);
-		position_data_[1] = vec4(.5f, .5f, .5f, 1.0f);
-		position_data_[2] = vec4(-.5f, -.5f, .5f, 1.0f);
-		position_data_[3] = vec4(.5f, -.5f, .5f, 1.0f);
-		position_data_[4] = vec4(-.5f, .5f, -.5f, 1.0f);
-		position_data_[5] = vec4(.5f, .5f, -.5f, 1.0f);
-		position_data_[6] = vec4(-.5f, -.5f, -.5f, 1.0f);
-		position_data_[7] = vec4(.5f, -.5f, -.5f, 1.0f);
-
-
-		// Index data //
-		// front face of cube verts
-		unsigned int tl_f = 0; unsigned int tr_f = 1;
-		unsigned int bl_f = 2; unsigned int br_f = 3;
-
-		// back face of cube verts
-		unsigned int tl_b = 4; unsigned int tr_b = 5;
-		unsigned int bl_b = 6; unsigned int br_b = 7;
-
-		index_data_ = vector<unsigned int>
-		{
-			tl_f, tr_f, bl_f, tr_f, br_f, bl_f,  // front face
-				bl_f, bl_b, tl_b, tl_b, tl_f, bl_f, // left face
-				tl_b, tr_b, br_b, br_b, bl_b, tl_b, // back face
-				br_f, br_b, tr_b, tr_b, tr_f, br_f, // right face
-				tl_f, tr_f, tr_b, tr_b, tl_b, tl_f, // top face
-				bl_f, br_f, br_b, br_b, bl_b, bl_f // bottom face
-		};
-
-		SetMaterial(Material::default_material);
+	void Renderable::Initialize()
+	{
+		if (bound_material_ == nullptr)
+			BindToMaterial(Material::StandardMaterials::SolidPurple);
 	}
-
 
 	Renderable::~Renderable()
 	{
@@ -56,26 +39,23 @@ namespace pb
 
 
 
-
-	void Renderable::set_renderable_defaults()
+	void Renderable::BindToMaterial(Material* m)
 	{
-
+		m->BindRenderable(this);
 	}
 
-
-	void Renderable::SetMaterial(Material* material)
-	{
-		active_material_ = material;
-		active_material_->CreateRequiredBuffers(this);
-	}
 
 	void Renderable::Draw()
 	{
-		model_view_projection_ = Camera::active_camera->projection *  Camera::active_camera->view * transform_matrix_world;
+		/// @todo move this to Update; //maybe, most likely it's still only gonna get called once per frame.. for now
+		if (uniform_config[Material::REQUIREMENTS_UNIFORM_MVP].uniform_location != -1)
+		{
+			*static_cast<mat4*>(uniform_config[Material::REQUIREMENTS_UNIFORM_MVP].data_pointer) = Camera::active_camera->projection *  Camera::active_camera->view * transform_matrix_world;
+		}
 
-		assert(active_material_ != nullptr && "Material Not set before rendering!");
+		assert(bound_material_ != nullptr && "Material Not set before rendering!");
 
-		active_material_->DrawRenderable(this);
+		bound_material_->DrawRenderable(this);// , Material::DrawStyle::DRAWSTYLE_POINTS);
 	}
 
 

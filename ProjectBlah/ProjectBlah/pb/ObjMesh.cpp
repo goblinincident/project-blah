@@ -36,27 +36,39 @@ namespace pb
 
 			// positions //
 			int number_of_verts = shape.mesh.positions.size() / 3;
+			vector<vec4>* position_data = new vector<vec4>(number_of_verts);
 
-			renderable->position_data_ = vector<vec4>(number_of_verts);
 			for (int i = 0; i < number_of_verts; i++)
 			{
-				renderable->position_data_[i].x = shape.mesh.positions[i * 3];
-				renderable->position_data_[i].y = shape.mesh.positions[i * 3 + 1];
-				renderable->position_data_[i].z = shape.mesh.positions[i * 3 + 2];
-				renderable->position_data_[i].w = 1;
+				(*position_data)[i].x = shape.mesh.positions[i * 3];
+				(*position_data)[i].y = shape.mesh.positions[i * 3 + 1];
+				(*position_data)[i].z = shape.mesh.positions[i * 3 + 2];
+				(*position_data)[i].w = 1;
 			}
 
+			auto attrib_data = &renderable->attribute_config[Material::REQUIREMENTS_ATTRIBUTE_POSITION];
+			delete attrib_data->data_pointer;
+			attrib_data->data_pointer = &((*position_data)[0]);
+			attrib_data->data_element_count = position_data->size();
+			attrib_data->data_size = position_data->size() * sizeof(vec4);
 
 			// indicies //
-			renderable->index_data_ = vector<unsigned int>(shape.mesh.indices.size());
+			auto index_data = new vector<unsigned int>(shape.mesh.indices.size());
+
 			for (unsigned int i = 0; i < shape.mesh.indices.size(); i++)
 			{
-				renderable->index_data_[i] = shape.mesh.indices[i];
+				(*index_data)[i] = shape.mesh.indices[i];
 			}
 
+			attrib_data = &renderable->attribute_config[Material::REQUIREMENTS_ATTRIBUTE_INDEX];
+			delete attrib_data->data_pointer;
+			attrib_data->data_pointer = &((*index_data)[0]);
+			attrib_data->data_element_count = index_data->size();
+			attrib_data->data_size = index_data->size() * sizeof(unsigned int);
+			
 
 			// materials // /// @todo extract materials from obj
-			renderable->SetMaterial(Material::default_material);
+			//renderable->BindToMaterial(Material::StandardMaterials::SolidPurple);
 
 
 			//renderable->AttachParent(this);

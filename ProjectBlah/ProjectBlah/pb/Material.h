@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <glm\glm.hpp>
-
+#include <list>
+#include <map>
 
 class ProjectBlah;
 
@@ -12,56 +13,78 @@ namespace pb
 
 	class Material
 	{
+		friend class ProjectBlah;
+		static void InitializeStandardMaterials();
+		
+		std::list<Renderable*> bound_renderables_;
+
+
+
 	public:
 
-		/** @brief Generates a vertex buffer object for
-		* this material.
-		* (called by Renderable)
-		**/
-		void CreateRequiredBuffers(Renderable* r);
+		enum{
+			REQUIREMENTS_NONE		= 0,
+			REQUIREMENTS_ATTRIBUTE_POSITION = 1 << 0,
+			REQUIREMENTS_ATTRIBUTE_INDEX = 1 << 1,
 
-		void DrawRenderable(Renderable* r);
-
-
-		enum Attributes
+			REQUIREMENTS_UNIFORM_COLOUR = 1 << 29,
+			REQUIREMENTS_UNIFORM_MVP = 1 << 30,
+			REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE = 1 << 31
+		};
+		enum ShaderTpes
 		{
-			ATTRIBUTE_NONE = 0,
-			ATTRIBUTE_POSITION = 1 << 0
+			SHADERTYPE_VERTEX = 0x8B31,
+			SHADERTYPE_FRAGMENT = 0x8B30
+		};
+		enum DrawStyle
+		{
+			DRAWSTYLE_TRIANGLE = 0x0004,
+			DRAWSTYLE_POINTS = 0x0000
 		};
 
-		enum Uniforms
+
+
+
+		typedef struct
 		{
-			UNIFORM_NONE = 0,
-			UNIFORM_MVP = 1 << 0
-		};
+			static Material* SolidPurple;
+			static Material* SolidRed;
+		}StandardMaterials;
 
-		static Material* default_material;
 
-		Material(/*shader options etc*/);
+		Material();
 
-		void SetShader(
-			std::string vertex_shader_path = "",
-			std::string fragment_shader_path = "",
-			unsigned int attribute_flags = Attributes::ATTRIBUTE_POSITION,
-			unsigned int uniform_flags = Uniforms::UNIFORM_MVP);
+		void BindRenderable(Renderable* r);
+
+
+		void SetShader(std::string path, ShaderTpes type, unsigned int requirements = REQUIREMENTS_NONE );
+
+
+		void DrawRenderable(Renderable* r, DrawStyle draw_style = DRAWSTYLE_TRIANGLE);
 
 
 	private:
+		void activate_requirements(unsigned int requirement_flags);
 
-		unsigned int attribute_flags_;
-		unsigned int uniform_flags_;
-
-		std::string		vertex_shader_path_;
-		std::string		vertex_shader_code_;
-
-		std::string		fragment_shader_path_;
-		std::string		fragment_shader_code_;
+		struct shader_data
+		{
+			std::string path = "";
+			std::string code = "";
+			unsigned int id = -1;
+			unsigned int requirement_flags = 0;
+		};
 
 		unsigned int shader_program_id_;
 
+		unsigned int requirement_flags_;
 
+		std::map<const ShaderTpes, shader_data*> shader_data_map;
 
+		shader_data* shader_data_vertex_;
+		shader_data* shader_data_fragment_;
 
+		
+		void ready_requirements(Renderable* r, unsigned int attributes);
 
 		unsigned int load_shader(const char* shader_source, unsigned int type);
 		std::string read_shader(std::string shader_path);

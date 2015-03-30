@@ -145,13 +145,9 @@ namespace pb
 
 	static void TW_CALL SetScaleCallback(const void* value, void* clientData)
 	{
-		static_cast<GameObject*>(clientData)->position_local.x = *static_cast<const float*>(value);
+		static_cast<GameObject*>(clientData)->scale_local.x = *static_cast<const float*>(value);
 	}
 
-	static void TW_CALL GetScaleCallback(void* value, void* clienntData)
-	{
-		*static_cast<float*>(value) = static_cast<GameObject*>(clienntData)->position_local.x;
-	}
 
 	void GameObject::OpenDebugWindow()
 	{
@@ -159,9 +155,7 @@ namespace pb
 
 
 		// tewakable
-		TwAddVarRW(bar, "draw tran?", TW_TYPE_BOOL32, &draw_transform_,
-			"group='Game Object' "
-			"help='Draws a transform gizmo.' ");
+		TwAddVarRW(bar, "draw tran?", TW_TYPE_BOOLCPP, &draw_transform_,	"group='Game Object'");
 
 		TwAddVarRW(bar, "local_pos_x", TW_TYPE_FLOAT, &position_local.x, "label='x' group='position local'");
 		TwAddVarRW(bar, "local_pos_y", TW_TYPE_FLOAT, &position_local.y, "label='y' group='position local'");
@@ -171,7 +165,12 @@ namespace pb
 		TwAddVarRW(bar, "local_rot_y", TW_TYPE_FLOAT, &rotation_local.y, "label='y' group='rotation local'");
 		TwAddVarRW(bar, "local_rot_z", TW_TYPE_FLOAT, &rotation_local.z, "label='z' group='rotation local'");
 
-		TwAddVarCB(bar, "scale_all", TW_TYPE_FLOAT, SetScaleCallback, GetScaleCallback, this, "");
+		TwAddVarCB(bar, "scale_all", TW_TYPE_FLOAT, 
+			[](const void* value, void* go)	{static_cast<GameObject*>(go)->scale_local = vec3(1, 1, 1)* *static_cast<const float*>(value);}, 
+			[](void*, void*){}, this, "label='set all' group='scale local'");
+		TwAddVarRW(bar, "local_scale_x", TW_TYPE_FLOAT, &scale_local.x, "label='x' group='scale local'");
+		TwAddVarRW(bar, "local_scale_y", TW_TYPE_FLOAT, &scale_local.y, "label='y' group='scale local'");
+		TwAddVarRW(bar, "local_scale_z", TW_TYPE_FLOAT, &scale_local.z, "label='z' group='scale local'");
 
 		// readable
 		TwAddVarRO(bar, "world_pos_x", TW_TYPE_FLOAT, &position_world.x, "label='x' group='position world'");
@@ -186,16 +185,16 @@ namespace pb
 		std::string layout = "'"; layout += name; layout += "'/'position world' group='Game Object'";
 		TwDefine(layout.c_str());
 
-		layout.clear();
 		layout = "'"; layout += name; layout += "'/'rotation world' group='Game Object'";
 		TwDefine(layout.c_str());
 
-		layout.clear();
 		layout = "'"; layout += name; layout += "'/'position local' group='Game Object'";
 		TwDefine(layout.c_str());
 
-		layout.clear();
 		layout = "'"; layout += name; layout += "'/'rotation local' group='Game Object'";
+		TwDefine(layout.c_str());
+
+		layout = "'"; layout += name; layout += "'/'scale local' group='Game Object'";
 		TwDefine(layout.c_str());
 	}
 
