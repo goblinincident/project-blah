@@ -66,13 +66,13 @@ namespace pb
 
 		if (image_source == nullptr)
 		{
-			image_source = new unsigned char[3]{255, 255, 255};
+			image_source = new unsigned char[3]{100, 200, 120};
 			data.width = 1; data.height = 1;
 		}
 
 		glGenTextures(1, &data.texture_id);
 		glBindTexture(GL_TEXTURE_2D, data.texture_id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.width, data.height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_source);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_source);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

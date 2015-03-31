@@ -38,16 +38,19 @@ namespace pb
 
 		struct texture_data
 		{
-			texture_data(std::string path, unsigned int texture_location):
-			path(path),
-			texture_location(texture_location){}
+			texture_data(std::string uniform_name, unsigned int gl_texture_slot, unsigned int texture_slot, std::string path) :
+			uniform_name(uniform_name),
+			gl_texture_slot(gl_texture_slot),
+			texture_slot(texture_slot),
+			path(path){}
 
+			const std::string uniform_name;
+			const unsigned int gl_texture_slot;
+			const unsigned int texture_slot;
 			std::string path;
-			const unsigned int texture_location;
 			int width = -1;
 			int height = -1;
-			int format = -1;
-			unsigned int texture_id = -1;
+			unsigned int gl_texture_id = -1;
 			unsigned int uniform_location = -1;
 		};
 

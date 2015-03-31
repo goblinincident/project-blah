@@ -56,20 +56,42 @@ namespace pb
 			// uv's //
 			vector<vec2>* uv_data = new vector<vec2>(number_of_verts);
 
-			for (int i = 0; i < number_of_verts; i++)
+			if (shape.mesh.texcoords.size() == 0)
 			{
-				if (shape.mesh.texcoords.size() == 0)
+				for (int i = 0; i < number_of_verts; i++)
 				{
 					(*uv_data)[i].x = 0;
 					(*uv_data)[i].y = 1;
+					i++;
+					if (i < number_of_verts);
+					{
+						(*uv_data)[i].x = 1;
+						(*uv_data)[i].y = 1;
+					}
+					i++;
+					if (i < number_of_verts)
+					{
+						(*uv_data)[i].x = 1;
+						(*uv_data)[i].y = 0;
+					}
+					i++;
+					if (i < number_of_verts)
+					{
+						(*uv_data)[i].x = 0;
+						(*uv_data)[i].y = 0;
+					}
+
 				}
-				else
+			}
+			else
+			{
+				for (int i = 0; i < number_of_verts; i++)
 				{
 					(*uv_data)[i].x = shape.mesh.texcoords[i * 2];
 					(*uv_data)[i].y = shape.mesh.texcoords[i * 2 + 1];
 				}
-				
 			}
+
 			attrib_data = &renderable->attribute_config[Material::REQUIREMENTS_ATTRIBUTE_UV];
 			delete attrib_data->data_pointer;
 			attrib_data->data_pointer = &((*uv_data)[0]);

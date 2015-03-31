@@ -29,29 +29,30 @@ namespace pb
 		Material* mat;
 
 		mat = new Material();
-		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, 
-			REQUIREMENTS_ATTRIBUTE_POSITION | 
-			REQUIREMENTS_ATTRIBUTE_INDEX | 
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX,
+			REQUIREMENTS_ATTRIBUTE_POSITION |
+			REQUIREMENTS_ATTRIBUTE_INDEX |
 			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
 		StandardMaterials::SolidRed = mat;
 
 		mat = new Material();
-		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, 
-			REQUIREMENTS_ATTRIBUTE_POSITION | 
-			REQUIREMENTS_ATTRIBUTE_INDEX | 
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX,
+			REQUIREMENTS_ATTRIBUTE_POSITION |
+			REQUIREMENTS_ATTRIBUTE_INDEX |
 			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/solid_purple.frag.glsl", SHADERTYPE_FRAGMENT);
 		StandardMaterials::SolidPurple = mat;
 
 		mat = new Material();
-		mat->SetShader("./data/shader/basic_texture.vert.glsl", SHADERTYPE_VERTEX, 
-			REQUIREMENTS_ATTRIBUTE_POSITION | 
-			REQUIREMENTS_ATTRIBUTE_INDEX | 
-			REQUIREMENTS_ATTRIBUTE_UV | 
+		mat->SetShader("./data/shader/basic_texture.vert.glsl", SHADERTYPE_VERTEX,
+			REQUIREMENTS_ATTRIBUTE_POSITION |
+			REQUIREMENTS_ATTRIBUTE_INDEX |
+			REQUIREMENTS_ATTRIBUTE_UV |
 			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/basic_texture.frag.glsl", SHADERTYPE_FRAGMENT,
-			REQUIREMENTS_TEXTURE_0_DIFFUSE);
+			REQUIREMENTS_TEXTURE_0_DIFFUSE |
+			REQUIREMENTS_TEXTURE_1_DIFFUSE);
 		StandardMaterials::SimpleTexture = mat;
 	}
 
@@ -133,10 +134,15 @@ namespace pb
 			glUniformMatrix4fv(data->uniform_location, 1, GL_FALSE, value_ptr(*static_cast<mat4*>(data->data_pointer)));
 		}
 
+
 		if (requirement_flags_ & REQUIREMENTS_TEXTURE_0_DIFFUSE)
 		{
-			auto data = &r->uniform_config[REQUIREMENTS_TEXTURE_0_DIFFUSE];
-			glActiveTexture(data->uniform_location);
+			//auto data = &r->texture_config[REQUIREMENTS_TEXTURE_0_DIFFUSE];
+			//glActiveTexture(data->gl_texture_slot);
+
+		/*	glUniform1i(data->uniform_location, data->gl_texture_slot);
+			glActiveTexture(data->gl_texture_slot)*/;
+			//glBindTexture(GL_TEXTURE_2D, data->gl_texture_id);
 		}
 
 
@@ -184,7 +190,7 @@ namespace pb
 		for (auto iter = r->attribute_config.begin(); iter != r->attribute_config.end(); iter++)
 		{
 			auto flag = (*iter).first;
-	
+
 			if (requirement_flags_ & flag)
 			{
 				auto data = &(*iter).second;
@@ -211,16 +217,25 @@ namespace pb
 		}
 
 		// textures //
+		glUseProgram(shader_program_id_);
+
 		for (auto iter = r->texture_config.begin(); iter != r->texture_config.end(); iter++)
 		{
 			auto flag = (*iter).first;
 			if (requirement_flags_ & flag)
 			{
 				auto data = &(*iter).second;
-				data->texture_id = TextureManager::GetTextureId(data->path);
+
+				data->gl_texture_id = TextureManager::GetTextureId(data->path);
 				data->width = TextureManager::GetTextureWidth(data->path);
 				data->height = TextureManager::GetTextureHeight(data->path);
-				
+				data->uniform_location = glGetUniformLocation(shader_program_id_, data->uniform_name.c_str());
+				if (data->uniform_location != -1)
+				{
+					glUniform1i(data->uniform_location, data->gl_texture_slot);
+					glActiveTexture(data->gl_texture_slot);
+					glBindTexture(GL_TEXTURE_2D, data->gl_texture_id);
+				}
 			}
 		}
 

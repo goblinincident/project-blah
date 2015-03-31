@@ -22,7 +22,8 @@ namespace pb
 			{ Material::REQUIREMENTS_UNIFORM_MVP, uniform_data{ "pvm", -1, new mat4(1.0f) } },
 	}),
 		texture_config({
-			{ Material::REQUIREMENTS_TEXTURE_0_DIFFUSE, texture_data{"./data/texture/default_texture.png", 0} }
+			{ Material::REQUIREMENTS_TEXTURE_0_DIFFUSE, texture_data{ "texture_0_diffuse", GL_TEXTURE0, 0,"./data/texture/default_texture.png"} },
+			{ Material::REQUIREMENTS_TEXTURE_1_DIFFUSE, texture_data{ "texture_1_diffuse", GL_TEXTURE1, 1,"./data/texture/default_textureT.png"} }
 	})
 	{
 		vertex_array_object_ = -1;
