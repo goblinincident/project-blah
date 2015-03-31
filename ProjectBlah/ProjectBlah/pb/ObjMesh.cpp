@@ -33,9 +33,9 @@ namespace pb
 		{
 			Renderable* renderable = new Renderable("obj shape");
 
+			int number_of_verts = shape.mesh.positions.size() / 3;
 
 			// positions //
-			int number_of_verts = shape.mesh.positions.size() / 3;
 			vector<vec4>* position_data = new vector<vec4>(number_of_verts);
 
 			for (int i = 0; i < number_of_verts; i++)
@@ -49,8 +49,34 @@ namespace pb
 			auto attrib_data = &renderable->attribute_config[Material::REQUIREMENTS_ATTRIBUTE_POSITION];
 			delete attrib_data->data_pointer;
 			attrib_data->data_pointer = &((*position_data)[0]);
-			attrib_data->data_element_count = position_data->size();
+			attrib_data->data_element_count = number_of_verts;
 			attrib_data->data_size = position_data->size() * sizeof(vec4);
+
+
+			// uv's //
+			vector<vec2>* uv_data = new vector<vec2>(number_of_verts);
+
+			for (int i = 0; i < number_of_verts; i++)
+			{
+				if (shape.mesh.texcoords.size() == 0)
+				{
+					(*uv_data)[i].x = 0;
+					(*uv_data)[i].y = 1;
+				}
+				else
+				{
+					(*uv_data)[i].x = shape.mesh.texcoords[i * 2];
+					(*uv_data)[i].y = shape.mesh.texcoords[i * 2 + 1];
+				}
+				
+			}
+			attrib_data = &renderable->attribute_config[Material::REQUIREMENTS_ATTRIBUTE_UV];
+			delete attrib_data->data_pointer;
+			attrib_data->data_pointer = &((*uv_data)[0]);
+			attrib_data->data_element_count = number_of_verts;
+			attrib_data->data_size = uv_data->size() * sizeof(vec2);
+
+
 
 			// indicies //
 			auto index_data = new vector<unsigned int>(shape.mesh.indices.size());
@@ -65,10 +91,11 @@ namespace pb
 			attrib_data->data_pointer = &((*index_data)[0]);
 			attrib_data->data_element_count = index_data->size();
 			attrib_data->data_size = index_data->size() * sizeof(unsigned int);
-			
+
+
 
 			// materials // /// @todo extract materials from obj
-			//renderable->BindToMaterial(Material::StandardMaterials::SolidPurple);
+			renderable->BindToMaterial(Material::StandardMaterials::TestTexure);
 
 
 			//renderable->AttachParent(this);

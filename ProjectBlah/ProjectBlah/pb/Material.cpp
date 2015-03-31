@@ -12,6 +12,7 @@
 #include <pb\Renderable.h>
 
 #include <pb\Material.h>
+#include <pb\TextureManager.h>
 
 using namespace std;
 using namespace glm;
@@ -20,6 +21,7 @@ namespace pb
 {
 	Material* Material::StandardMaterials::SolidPurple = nullptr;
 	Material* Material::StandardMaterials::SolidRed = nullptr;
+	Material* Material::StandardMaterials::TestTexure = nullptr;
 
 
 	void Material::InitializeStandardMaterials()
@@ -27,14 +29,30 @@ namespace pb
 		Material* mat;
 
 		mat = new Material();
-		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, REQUIREMENTS_ATTRIBUTE_POSITION | REQUIREMENTS_ATTRIBUTE_INDEX | REQUIREMENTS_UNIFORM_MVP);
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, 
+			REQUIREMENTS_ATTRIBUTE_POSITION | 
+			REQUIREMENTS_ATTRIBUTE_INDEX | 
+			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
 		StandardMaterials::SolidRed = mat;
 
 		mat = new Material();
-		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, REQUIREMENTS_ATTRIBUTE_POSITION | REQUIREMENTS_ATTRIBUTE_INDEX | REQUIREMENTS_UNIFORM_MVP);
+		mat->SetShader("./data/shader/basic_position.vert.glsl", SHADERTYPE_VERTEX, 
+			REQUIREMENTS_ATTRIBUTE_POSITION | 
+			REQUIREMENTS_ATTRIBUTE_INDEX | 
+			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/solid_purple.frag.glsl", SHADERTYPE_FRAGMENT);
 		StandardMaterials::SolidPurple = mat;
+
+		mat = new Material();
+		mat->SetShader("./data/shader/basic_texture.vert.glsl", SHADERTYPE_VERTEX, 
+			REQUIREMENTS_ATTRIBUTE_POSITION | 
+			REQUIREMENTS_ATTRIBUTE_INDEX | 
+			REQUIREMENTS_ATTRIBUTE_UV | 
+			REQUIREMENTS_UNIFORM_MVP);
+		mat->SetShader("./data/shader/basic_texture.frag.glsl", SHADERTYPE_FRAGMENT,
+			REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE);
+		StandardMaterials::TestTexure = mat;
 	}
 
 
@@ -115,6 +133,12 @@ namespace pb
 		{
 			auto data = &r->uniform_config[REQUIREMENTS_UNIFORM_MVP];
 			glUniformMatrix4fv(data->uniform_location, 1, GL_FALSE, value_ptr(*static_cast<mat4*>(data->data_pointer)));
+		}
+
+		if (requirement_flags_ & REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE)
+		{
+			auto data = &r->uniform_config[REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE];
+			glActiveTexture(data->uniform_location);
 		}
 
 

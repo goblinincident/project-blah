@@ -9,7 +9,6 @@ class ProjectBlah;
 
 namespace pb
 {
-
 	class Material;
 
 	class Renderable : public GameObject
@@ -40,6 +39,8 @@ namespace pb
 
 		std::map<const unsigned int, attribute_data>attribute_config;
 		std::map<const unsigned int, uniform_data>uniform_config;
+		//std::map<const unsigned int, TextureManager::texture_data*>texture_config;
+
 		unsigned int vertex_array_object_;
 		Material* bound_material_ = nullptr;
 

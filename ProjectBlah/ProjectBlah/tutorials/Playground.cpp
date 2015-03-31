@@ -45,8 +45,8 @@ namespace tutorials
 
 			if (glfwGetKey(pb::Window::GetWindow()->glfw_window, GLFW_KEY_T) == GLFW_PRESS)
 			{
-				pb::Material::StandardMaterials::SolidPurple->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
-
+				//pb::Material::StandardMaterials::SolidPurple->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
+			
 			}
 
 		}

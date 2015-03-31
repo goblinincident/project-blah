@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="aie\Gizmos.cpp" />
     <ClCompile Include="aie\gl_core_4_4.c" />
+    <ClCompile Include="data\shader\TEST.cpp" />
     <ClCompile Include="pb\Dummy.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pb\AntTweakHelper.cpp" />

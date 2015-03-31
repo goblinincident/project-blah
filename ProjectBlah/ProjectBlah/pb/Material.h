@@ -26,6 +26,7 @@ namespace pb
 			REQUIREMENTS_NONE		= 0,
 			REQUIREMENTS_ATTRIBUTE_POSITION = 1 << 0,
 			REQUIREMENTS_ATTRIBUTE_INDEX = 1 << 1,
+			REQUIREMENTS_ATTRIBUTE_UV = 1 << 2,
 
 			REQUIREMENTS_UNIFORM_COLOUR = 1 << 29,
 			REQUIREMENTS_UNIFORM_MVP = 1 << 30,
@@ -49,6 +50,7 @@ namespace pb
 		{
 			static Material* SolidPurple;
 			static Material* SolidRed;
+			static Material* TestTexure;
 		}StandardMaterials;
 
 

@@ -1,12 +1,12 @@
 #version 410
 
-layout(location=1) in vec4 Position;
+layout(location=0) in vec4 position;
 
 
-uniform mat4 PVM;
+uniform mat4 pvm;
 
 void main()
 {
-	gl_Position = PVM * Position;
+	gl_Position = pvm * position;
 	//gl_Position = Position;
 }

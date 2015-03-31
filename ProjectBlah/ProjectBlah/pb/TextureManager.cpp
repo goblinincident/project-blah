@@ -19,6 +19,7 @@ namespace pb
 	TextureManager::TextureManager()
 	{
 		load_new_texture("./data/texture/default_texture.png");
+		//load_new_texture();
 	}
 
 	TextureManager::~TextureManager()
@@ -29,10 +30,10 @@ namespace pb
 
 
 
-	unsigned int TextureManager::GetTextureId(string texture_path)
+	const TextureManager::texture_data& TextureManager::GetTextureData(string texture_path)
 	{
 
-		if (is_new_texture(texture_path))
+		if (loaded_textures_.find(texture_path) == loaded_textures_.end())
 			load_new_texture(texture_path);
 
 		return loaded_textures_[texture_path];
@@ -40,28 +41,29 @@ namespace pb
 
 
 
-	bool TextureManager::is_new_texture(string texture_path)
-	{
-		return loaded_textures_.find(texture_path) == loaded_textures_.end();
-	}
 
 	void TextureManager::load_new_texture(string texture_path)
 	{
-		int img_width = 0, img_height = 0, img_format = 0;
-		unsigned char* data = stbi_load(texture_path.c_str(), &img_width, &img_height, &img_format, STBI_default);
+		texture_data data;
 
-		unsigned int tex_id = 0;
+		unsigned char* image_source = stbi_load(texture_path.c_str(), &data.width, &data.height, &data.format, STBI_default);
 
-		glGenTextures(1, &tex_id);
-		glBindTexture(GL_TEXTURE_2D, tex_id);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img_width, img_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		if (image_source == nullptr)
+		{
+			image_source = new unsigned char[3]{255, 255, 255};
+			data.width = 1; data.height = 1;
+		}
+
+		glGenTextures(1, &data.id);
+		glBindTexture(GL_TEXTURE_2D, data.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.width, data.height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_source);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		stbi_image_free(data);
+		stbi_image_free(image_source);
 
-		loaded_textures_[texture_path] = tex_id;
+		loaded_textures_[texture_path] = data;
 	}
 
 }
