@@ -9,7 +9,7 @@ namespace pb
 	{
 		friend class ProjectBlah;
 
-		static AntTweakHelper* instance_;
+		static AntTweakHelper* ant_tweak_helper_instance_;
 
 		AntTweakHelper();
 		static void Update();

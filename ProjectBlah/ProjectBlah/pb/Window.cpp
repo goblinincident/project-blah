@@ -11,7 +11,7 @@
 
 namespace pb
 {
-	Window* Window::window_ = nullptr;
+	Window* Window::window_instance_ = nullptr;
 
 
 	Window::Window() :
@@ -27,6 +27,7 @@ namespace pb
 
 		glClearColor(0.1f, 0.1f, 0.25f, 1.0f);
 
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 		glEnable(GL_DEPTH_TEST);
 	}
 
@@ -38,7 +39,7 @@ namespace pb
 
 	const Window* Window::GetWindow()
 	{
-		return window_;
+		return window_instance_;
 	}
 
 

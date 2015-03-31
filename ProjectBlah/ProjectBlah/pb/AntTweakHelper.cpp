@@ -8,7 +8,7 @@
 
 namespace pb
 {
-	AntTweakHelper* AntTweakHelper::instance_ = nullptr;
+	AntTweakHelper* AntTweakHelper::ant_tweak_helper_instance_ = nullptr;
 
 	AntTweakHelper::AntTweakHelper()
 	{

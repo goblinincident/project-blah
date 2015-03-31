@@ -36,10 +36,18 @@ namespace pb
 			void* data_pointer;
 		};
 
+		struct texture_data
+		{
+			std::string path;
+			unsigned int texture_id;
+			unsigned int uniform_location;
+			const unsigned int texture_position;
+		};
+
 
 		std::map<const unsigned int, attribute_data>attribute_config;
 		std::map<const unsigned int, uniform_data>uniform_config;
-		//std::map<const unsigned int, TextureManager::texture_data*>texture_config;
+		std::map<const unsigned int, texture_data>texture_config;
 
 		unsigned int vertex_array_object_;
 		Material* bound_material_ = nullptr;

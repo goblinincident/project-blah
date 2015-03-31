@@ -27,16 +27,16 @@ namespace pb
 		glm::vec4 desired_pos;
 
 		if (glfwGetKey(glfw_win, GLFW_KEY_W) == GLFW_PRESS)
-			desired_pos.z -= move_speed * Time::delta;
+			desired_pos.z -= move_speed * Time::GetDeltaTime();
 
 		if (glfwGetKey(glfw_win, GLFW_KEY_S) == GLFW_PRESS)
-			desired_pos.z += move_speed * Time::delta;
+			desired_pos.z += move_speed * Time::GetDeltaTime();
 
 		if (glfwGetKey(glfw_win, GLFW_KEY_A) == GLFW_PRESS)
-			desired_pos.x -= move_speed * Time::delta;
+			desired_pos.x -= move_speed * Time::GetDeltaTime();
 
 		if (glfwGetKey(glfw_win, GLFW_KEY_D) == GLFW_PRESS)
-			desired_pos.x += move_speed * Time::delta;
+			desired_pos.x += move_speed * Time::GetDeltaTime();
 
 		desired_pos = rotation_matix_local * desired_pos;
 
@@ -55,8 +55,8 @@ namespace pb
 			{
 				glfwGetCursorPos(glfw_win, &cursor_x_, &cursor_y_);
 
-				rotation_local.x -= (float)(cursor_y_ - win->height / 2) * rotate_speed * Time::delta;
-				rotation_local.y -= (float)(cursor_x_ - win->width / 2) * rotate_speed * Time::delta;
+				rotation_local.x -= (float)(cursor_y_ - win->height / 2) * rotate_speed * Time::GetDeltaTime();
+				rotation_local.y -= (float)(cursor_x_ - win->width / 2) * rotate_speed * Time::GetDeltaTime();
 			}
 
 			glfwSetCursorPos(glfw_win, (double)win->width / 2, (double)win->height / 2);

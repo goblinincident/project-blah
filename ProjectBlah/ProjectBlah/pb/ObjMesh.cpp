@@ -95,7 +95,7 @@ namespace pb
 
 
 			// materials // /// @todo extract materials from obj
-			renderable->BindToMaterial(Material::StandardMaterials::TestTexure);
+			renderable->BindToMaterial(Material::StandardMaterials::SimpleTexture);
 
 
 			//renderable->AttachParent(this);

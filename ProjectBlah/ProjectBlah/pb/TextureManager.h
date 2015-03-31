@@ -13,7 +13,7 @@ namespace pb
 	{
 		friend class ProjectBlah;
 
-		static TextureManager* instance_;
+		static TextureManager* texture_manager_instance_;
 		TextureManager();
 		~TextureManager();
 

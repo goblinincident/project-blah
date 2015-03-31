@@ -15,10 +15,9 @@ namespace pb
 	class Window
 	{
 		friend class ProjectBlah;
-		static Window* window_;
+		static Window* window_instance_;
 		Window();
 		~Window();
-
 
 	public:
 

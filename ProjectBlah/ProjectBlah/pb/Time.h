@@ -15,10 +15,12 @@ namespace pb
 
 		static float old_;
 
+		static float game_;
+		static float delta_;
 
 	public:
+		static const float GetGameTime();
+		static const float GetDeltaTime();
 
-		static float game;
-		static float delta;
 	};
 };

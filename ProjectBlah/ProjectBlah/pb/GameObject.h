@@ -13,7 +13,7 @@ namespace pb
 {
 	/// @todo provide access restrictions on transform variables
 
-	/// @brief Everything's a game object.
+	/// @brief Everything's a game_ object.
 	class GameObject : public virtual DebugWindow
 	{
 		friend class ProjectBlah;

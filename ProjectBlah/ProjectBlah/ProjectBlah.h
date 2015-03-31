@@ -23,7 +23,7 @@
 * About
 * -------------
 * This project was developed to meet the requirements
-* of the AIE tutorials found here: <a href="http://aieportal.aie.edu.au/course/view.php?id=239">AIE OpenGL Tutorials</a>
+* of the AIE tutorials found here: <a href="http://aieportal.aie.edu.au/course/view_.php?id=239">AIE OpenGL Tutorials</a>
 * <br><br>
 *
 * <hr>
@@ -81,7 +81,10 @@ protected:
 	ProjectBlah();
 	~ProjectBlah();
 
+	/// @brief Use this to initialise derived application.
 	virtual void Initialize(){}
+	/// @brief Called once per frame.
 	virtual void Update(){}
+	/// @brief Called on shutdown.
 	virtual void Shutdown(){}
 };

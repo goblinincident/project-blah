@@ -14,7 +14,7 @@ using namespace std;
 
 namespace pb
 {
-	TextureManager* TextureManager::instance_ = nullptr;
+	TextureManager* TextureManager::texture_manager_instance_ = nullptr;
 
 	TextureManager::TextureManager()
 	{

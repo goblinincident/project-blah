@@ -14,29 +14,39 @@ namespace pb
 	{
 		friend class ProjectBlah;
 		static Camera* default_camera_;
+		static Camera* active_camera_;
+
+		float fov_;
+		float aspect_;
+		float clip_near_;
+		float clip_far_;
+
+		glm::mat4 view_;
+		glm::mat4 projection_;
 
 	protected:
 
-		void Update(); // virtual
+		void Update(); // virtual override
 		
 
 	public:
 
 		static const Camera* GetDefaultCamera();
+		static const Camera* GetActiveCamera();
 
-		static Camera* active_camera;
-
+		const float GetFov() const;
+		const float GetAspect() const;
+		const float GetClipNear() const;
+		const float GetClipFar() const;
+		const glm::mat4& GetView() const;
+		const glm::mat4& GetProjection() const;
 
 		Camera(const char* name = "camera");
 
 
-		float fov;
-		float aspect;
-		float clip_near;
-		float clip_far;
 
-		glm::mat4 view;
-		glm::mat4 projection;
+
+
 
 	};
 

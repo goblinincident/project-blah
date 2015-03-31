@@ -21,7 +21,7 @@ namespace pb
 {
 	Material* Material::StandardMaterials::SolidPurple = nullptr;
 	Material* Material::StandardMaterials::SolidRed = nullptr;
-	Material* Material::StandardMaterials::TestTexure = nullptr;
+	Material* Material::StandardMaterials::SimpleTexture = nullptr;
 
 
 	void Material::InitializeStandardMaterials()
@@ -52,15 +52,13 @@ namespace pb
 			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/basic_texture.frag.glsl", SHADERTYPE_FRAGMENT,
 			REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE);
-		StandardMaterials::TestTexure = mat;
+		StandardMaterials::SimpleTexture = mat;
 	}
 
 
 
 	Material::Material() :
 		requirement_flags_(0),
-		shader_data_vertex_(nullptr),
-		shader_data_fragment_(nullptr),
 		shader_data_map(map<const Material::ShaderTpes, Material::shader_data*>({
 			{ SHADERTYPE_VERTEX, nullptr },
 			{ SHADERTYPE_FRAGMENT, nullptr }
@@ -182,6 +180,7 @@ namespace pb
 	{
 		glBindVertexArray(r->vertex_array_object_);
 
+		// attributes //
 		for (auto iter = r->attribute_config.begin(); iter != r->attribute_config.end(); iter++)
 		{
 			auto flag = (*iter).first;
@@ -200,6 +199,7 @@ namespace pb
 			}
 		}
 
+		// uniforms //
 		for (auto iter = r->uniform_config.begin(); iter != r->uniform_config.end(); iter++)
 		{
 			auto flag = (*iter).first;
@@ -209,6 +209,19 @@ namespace pb
 				data->uniform_location = glGetUniformLocation(shader_program_id_, data->uniform_name.c_str());
 			}
 		}
+
+		// textures //
+		for (auto iter = r->texture_config.begin(); iter != r->texture_config.end(); iter++)
+		{
+			auto flag = (*iter).first;
+			if (requirement_flags_ & flag)
+			{
+				auto data = &(*iter).second;
+
+			}
+		}
+
+
 	}
 
 

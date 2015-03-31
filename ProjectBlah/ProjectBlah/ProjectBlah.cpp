@@ -11,34 +11,33 @@
 ProjectBlah::ProjectBlah()
 {
 	glfwInit();
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-
-	auto win = pb::Window::window_ = new pb::Window();
+	pb::Window::window_instance_ = new pb::Window();
 
 	pb::GameObject::root_node_ = new pb::GameObject("root node");
 
 	pb::Camera::default_camera_ = new pb::Camera();
 
-	pb::AntTweakHelper::instance_ = new pb::AntTweakHelper();
+	pb::AntTweakHelper::ant_tweak_helper_instance_ = new pb::AntTweakHelper();
+
 
 	ogl_LoadFunctions();
 
-	pb::TextureManager::instance_ = new pb::TextureManager();
+
+	pb::TextureManager::texture_manager_instance_ = new pb::TextureManager();
+
 
 	pb::Material::InitializeStandardMaterials();
-
 
 	Gizmos::create();
 }
 
 void ProjectBlah::Run()
 {
+	Initialize(); // virtual // initialize derrived application.
 
-	Initialize(); // virtual
-
-	auto glfw_win = pb::Window::window_->glfw_window;
-	auto cam = pb::Camera::active_camera;
+	auto glfw_win = pb::Window::GetWindow()->glfw_window;
+	auto cam = pb::Camera::GetActiveCamera();
 
 
 	do{
@@ -51,9 +50,11 @@ void ProjectBlah::Run()
 
 		pb::GameObject::UpdateAllGameObjects(pb::GameObject::root_node_);
 
-		Update(); // virtual
 
-		Gizmos::draw(cam->projection, cam->view);
+		Update(); // virtual // update derived application.
+
+
+		Gizmos::draw(cam->projection_, cam->view_);
 
 		pb::AntTweakHelper::Update();
 
@@ -62,7 +63,8 @@ void ProjectBlah::Run()
 
 	} while (!glfwGetKey(glfw_win, GLFW_KEY_ESCAPE) && !glfwWindowShouldClose(glfw_win));
 
-	Shutdown(); // virtual
+
+	Shutdown(); // virtual // shutdown derived application.
 }
 
 
@@ -71,11 +73,11 @@ ProjectBlah::~ProjectBlah()
 	Gizmos::destroy();
 
 	/// @todo delete pb::Material::default_material;
-	delete pb::TextureManager::instance_;
-	delete pb::AntTweakHelper::instance_;
+	delete pb::TextureManager::texture_manager_instance_;
+	delete pb::AntTweakHelper::ant_tweak_helper_instance_;
 	delete pb::Camera::default_camera_;
 	delete pb::GameObject::root_node_;
-	delete pb::Window::window_;
+	delete pb::Window::window_instance_;
 	
 	
 	glfwTerminate();

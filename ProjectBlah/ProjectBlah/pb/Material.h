@@ -15,18 +15,27 @@ namespace pb
 	{
 		friend class ProjectBlah;
 		static void InitializeStandardMaterials();
-		
-		std::list<Renderable*> bound_renderables_;
 
+		std::list<Renderable*> bound_renderables_;
 
 
 	public:
 
+		typedef struct
+		{
+			static Material* SolidPurple;
+			static Material* SolidRed;
+			static Material* SimpleTexture;
+		}StandardMaterials;
+
+
 		enum{
-			REQUIREMENTS_NONE		= 0,
+			REQUIREMENTS_NONE = 0,
 			REQUIREMENTS_ATTRIBUTE_POSITION = 1 << 0,
 			REQUIREMENTS_ATTRIBUTE_INDEX = 1 << 1,
 			REQUIREMENTS_ATTRIBUTE_UV = 1 << 2,
+
+			REQUIREMENTS_TEXTURE_DIFFUSE = 1 << 20,
 
 			REQUIREMENTS_UNIFORM_COLOUR = 1 << 29,
 			REQUIREMENTS_UNIFORM_MVP = 1 << 30,
@@ -44,29 +53,21 @@ namespace pb
 		};
 
 
-
-
-		typedef struct
-		{
-			static Material* SolidPurple;
-			static Material* SolidRed;
-			static Material* TestTexure;
-		}StandardMaterials;
-
-
 		Material();
 
 		void BindRenderable(Renderable* r);
 
 
-		void SetShader(std::string path, ShaderTpes type, unsigned int requirements = REQUIREMENTS_NONE );
+		void SetShader(std::string path, ShaderTpes type, unsigned int requirements = REQUIREMENTS_NONE);
 
 
 		void DrawRenderable(Renderable* r, DrawStyle draw_style = DRAWSTYLE_TRIANGLE);
 
 
 	private:
-		void activate_requirements(unsigned int requirement_flags);
+
+
+		unsigned int requirement_flags_;
 
 		struct shader_data
 		{
@@ -75,20 +76,18 @@ namespace pb
 			unsigned int id = -1;
 			unsigned int requirement_flags = 0;
 		};
+		std::map<const ShaderTpes, shader_data*> shader_data_map;
+
 
 		unsigned int shader_program_id_;
 
-		unsigned int requirement_flags_;
+		void activate_requirements(unsigned int requirement_flags);
 
-		std::map<const ShaderTpes, shader_data*> shader_data_map;
-
-		shader_data* shader_data_vertex_;
-		shader_data* shader_data_fragment_;
-
-		
 		void ready_requirements(Renderable* r, unsigned int attributes);
 
+
 		unsigned int load_shader(const char* shader_source, unsigned int type);
+
 		std::string read_shader(std::string shader_path);
 		void check_shader_program(unsigned int program_id);
 	};
