@@ -97,6 +97,7 @@
     <ClCompile Include="tinyobj\tiny_obj_loader.cc" />
     <ClCompile Include="tutorials\Cameras_and_Projections.cpp" />
     <ClCompile Include="tutorials\Playground.cpp" />
+    <ClCompile Include="tutorials\Rendering_Geometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pb\Dummy.h" />

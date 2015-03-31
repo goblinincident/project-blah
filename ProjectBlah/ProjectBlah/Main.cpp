@@ -5,6 +5,7 @@
 #include <tutorials\Playground.cpp>
 
 #include <tutorials\Cameras_and_projections.cpp>
+#include <tutorials\Rendering_Geometry.cpp>
 
 /** @brief
 *  Un-comment desired tutorial to see it in action.
@@ -21,7 +22,7 @@ int main()
 
 
 	//tutorials::Cameras_and_Projections app;
-
+	//tutorials::Rendering_Geometry app;
 
 
 
