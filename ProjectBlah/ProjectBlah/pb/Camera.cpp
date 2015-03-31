@@ -34,8 +34,7 @@ namespace pb
 		view_(mat4())
 	{
 		active_camera_ = this;
-		auto window = Window::GetWindow();
-		aspect_ = ((float)window->width / (float)window->height);
+		aspect_ = ((float)Window::GetWidth() / (float)Window::GetHeight());
 		projection_ = perspective(fov_, aspect_, clip_near_, clip_far_);
 		position_local = glm::vec3(0, 1, 10);
 	}

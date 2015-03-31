@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <pb\Renderable.h>
 
 class ProjectBlah;
 
@@ -17,34 +18,34 @@ namespace pb
 		TextureManager();
 		~TextureManager();
 
-
-	public:
-
-		struct texture_data
+		struct shared_texture_data
 		{
-			std::string path;
-			unsigned int location;
-			unsigned int id;
 			int width;
 			int height;
 			int format;
+			unsigned int texture_id;
 		};
+
+	public:
 
 
 		/// @todo Create a means of unloading textures (maybe grab and drop system).
 
 		/// @brief Gets id for texture.
 		/// @note Loads texture if not already loaded.
-		const texture_data& GetTextureData(std::string texture_path = "");
+		//const Renderable::texture_data GetTextureData(std::string texture_path = "");
 
+		static int GetTextureWidth(const std::string& texture_path);
+		static int GetTextureHeight(const std::string& texture_path);
+		static unsigned int GetTextureId(const std::string& texture_path);
 
 
 	private:
 
-		std::map<std::string, texture_data>loaded_textures_;
+		static std::map<std::string, shared_texture_data>shared_texture_data_map;
 
 
-		void load_new_texture(std::string texture_path = "");
+		static void load_new_texture(std::string texture_path = "");
 
 	};
 

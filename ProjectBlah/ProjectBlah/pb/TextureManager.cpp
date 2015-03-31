@@ -15,6 +15,7 @@ using namespace std;
 namespace pb
 {
 	TextureManager* TextureManager::texture_manager_instance_ = nullptr;
+	map<string, TextureManager::shared_texture_data> TextureManager::shared_texture_data_map = map<string, TextureManager::shared_texture_data>();
 
 	TextureManager::TextureManager()
 	{
@@ -30,13 +31,28 @@ namespace pb
 
 
 
-	const TextureManager::texture_data& TextureManager::GetTextureData(string texture_path)
+	int TextureManager::GetTextureWidth(const string& texture_path)
 	{
-
-		if (loaded_textures_.find(texture_path) == loaded_textures_.end())
+		if (shared_texture_data_map.find(texture_path) == shared_texture_data_map.end())
 			load_new_texture(texture_path);
 
-		return loaded_textures_[texture_path];
+		return shared_texture_data_map[texture_path].width;
+	}
+
+	int TextureManager::GetTextureHeight(const string& texture_path)
+	{
+		if (shared_texture_data_map.find(texture_path) == shared_texture_data_map.end())
+			load_new_texture(texture_path);
+
+		return shared_texture_data_map[texture_path].height;
+	}
+
+	unsigned int TextureManager::GetTextureId(const string& texture_path)
+	{
+		if (shared_texture_data_map.find(texture_path) == shared_texture_data_map.end())
+			load_new_texture(texture_path);
+
+		return shared_texture_data_map[texture_path].texture_id;
 	}
 
 
@@ -44,7 +60,7 @@ namespace pb
 
 	void TextureManager::load_new_texture(string texture_path)
 	{
-		texture_data data;
+		shared_texture_data data;
 
 		unsigned char* image_source = stbi_load(texture_path.c_str(), &data.width, &data.height, &data.format, STBI_default);
 
@@ -54,8 +70,8 @@ namespace pb
 			data.width = 1; data.height = 1;
 		}
 
-		glGenTextures(1, &data.id);
-		glBindTexture(GL_TEXTURE_2D, data.id);
+		glGenTextures(1, &data.texture_id);
+		glBindTexture(GL_TEXTURE_2D, data.texture_id);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.width, data.height, 0, GL_RGB, GL_UNSIGNED_BYTE, image_source);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -63,7 +79,7 @@ namespace pb
 
 		stbi_image_free(image_source);
 
-		loaded_textures_[texture_path] = data;
+		shared_texture_data_map[texture_path] = data;
 	}
 
 }

@@ -36,9 +36,8 @@ void ProjectBlah::Run()
 {
 	Initialize(); // virtual // initialize derrived application.
 
-	auto glfw_win = pb::Window::GetWindow()->glfw_window;
 	auto cam = pb::Camera::GetActiveCamera();
-
+	auto glfw_win = pb::Window::GetGlfwWindow();
 
 	do{
 		Gizmos::clear();

@@ -30,7 +30,7 @@ namespace tutorials
 		{
 			render_test.Draw();
 
-			//if (glfwGetKey(pb::Window::GetWindow()->glfw_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+			//if (glfwGetKey(pb::Window::GetWindow()->glfw_window_, GLFW_KEY_SPACE) == GLFW_PRESS)
 			//{
 			//	if (!pressed_test)
 			//		render_test.BindToMaterial(pb::Material::StandardMaterials::SolidRed);
@@ -43,7 +43,7 @@ namespace tutorials
 			//}
 
 
-			if (glfwGetKey(pb::Window::GetWindow()->glfw_window, GLFW_KEY_T) == GLFW_PRESS)
+			if (glfwGetKey(pb::Window::GetGlfwWindow(), GLFW_KEY_T) == GLFW_PRESS)
 			{
 				//pb::Material::StandardMaterials::SolidPurple->SetShader("./data/shader/solid_red.frag.glsl", pb::Material::SHADERTYPE_FRAGMENT);
 			

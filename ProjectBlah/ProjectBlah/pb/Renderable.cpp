@@ -12,9 +12,6 @@ using namespace std;
 
 namespace pb
 {
-
-	static vector<vec4>* balh = new vector<vec4>{ vec4(0, 0, 0, 1) };
-
 	Renderable::Renderable(const char* name) : GameObject(name),
 		attribute_config({
 			{ Material::REQUIREMENTS_ATTRIBUTE_POSITION, attribute_data{ 0, GL_ARRAY_BUFFER, GL_FLOAT, 1, 4, sizeof(vec4), -1, &((*new vector<vec4>{ vec4(0, 0, 0, 1) })[0]) } },
@@ -23,10 +20,9 @@ namespace pb
 	}),
 		uniform_config({
 			{ Material::REQUIREMENTS_UNIFORM_MVP, uniform_data{ "pvm", -1, new mat4(1.0f) } },
-			{ Material::REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE, uniform_data{ "texture_diffuse", -1, "./data/texture/default_texture.png" } }
 	}),
 		texture_config({
-			{ Material::REQUIREMENTS_TEXTURE_DIFFUSE, texture_data{ "./data/texture/default_texture.png", -1, -1, 0 } }
+			{ Material::REQUIREMENTS_TEXTURE_0_DIFFUSE, texture_data{"./data/texture/default_texture.png", 0} }
 	})
 	{
 		vertex_array_object_ = -1;

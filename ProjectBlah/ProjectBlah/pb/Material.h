@@ -35,11 +35,10 @@ namespace pb
 			REQUIREMENTS_ATTRIBUTE_INDEX = 1 << 1,
 			REQUIREMENTS_ATTRIBUTE_UV = 1 << 2,
 
-			REQUIREMENTS_TEXTURE_DIFFUSE = 1 << 20,
+			REQUIREMENTS_TEXTURE_0_DIFFUSE = 1 << 20,
 
 			REQUIREMENTS_UNIFORM_COLOUR = 1 << 29,
 			REQUIREMENTS_UNIFORM_MVP = 1 << 30,
-			REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE = 1 << 31
 		};
 		enum ShaderTpes
 		{
@@ -90,6 +89,42 @@ namespace pb
 
 		std::string read_shader(std::string shader_path);
 		void check_shader_program(unsigned int program_id);
+
+
+		static void check_requirements(unsigned int flag)
+		{
+			bool yes;
+
+			if (flag & REQUIREMENTS_NONE)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_ATTRIBUTE_POSITION)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_ATTRIBUTE_INDEX)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_ATTRIBUTE_UV)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_TEXTURE_0_DIFFUSE)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_UNIFORM_COLOUR)
+			{
+				yes = true;
+			}
+			if (flag & REQUIREMENTS_UNIFORM_MVP)
+			{
+				yes = true;
+			}
+
+		}
 	};
 
 

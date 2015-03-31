@@ -12,23 +12,22 @@ namespace pb
 
 	AntTweakHelper::AntTweakHelper()
 	{
-		auto win = Window::GetWindow();
-
 
 		TwInit(TW_OPENGL, NULL);
 		TwDefine(" GLOBAL help="
 			"'Descriptions:'");
 
-		TwWindowSize(win->width, win->height);
+		TwWindowSize(Window::GetWidth(), Window::GetHeight());
 
+		auto glfw_window = Window::GetGlfwWindow();
 		
-		glfwSetMouseButtonCallback(win->glfw_window, MouseButtonCB);
+		glfwSetMouseButtonCallback(glfw_window, MouseButtonCB);
 
-		glfwSetCursorPosCallback(win->glfw_window, MousePosCB);
+		glfwSetCursorPosCallback(glfw_window, MousePosCB);
 
-		glfwSetScrollCallback(win->glfw_window, MouseScrollCB);
+		glfwSetScrollCallback(glfw_window, MouseScrollCB);
 
-		glfwSetKeyCallback(win->glfw_window, KeyFunCB);
+		glfwSetKeyCallback(glfw_window, KeyFunCB);
 	}
 
 

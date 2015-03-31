@@ -19,8 +19,7 @@ namespace pb
 
 	void CameraFly::Update()
 	{
-		auto win = Window::GetWindow();
-		auto glfw_win = win->glfw_window;
+		auto glfw_win = Window::GetGlfwWindow();
 
 
 		// Movement //
@@ -55,11 +54,11 @@ namespace pb
 			{
 				glfwGetCursorPos(glfw_win, &cursor_x_, &cursor_y_);
 
-				rotation_local.x -= (float)(cursor_y_ - win->height / 2) * rotate_speed * Time::GetDeltaTime();
-				rotation_local.y -= (float)(cursor_x_ - win->width / 2) * rotate_speed * Time::GetDeltaTime();
+				rotation_local.x -= (float)(cursor_y_ - Window::GetHeight() / 2) * rotate_speed * Time::GetDeltaTime();
+				rotation_local.y -= (float)(cursor_x_ - Window::GetWidth() / 2) * rotate_speed * Time::GetDeltaTime();
 			}
 
-			glfwSetCursorPos(glfw_win, (double)win->width / 2, (double)win->height / 2);
+			glfwSetCursorPos(glfw_win, (double)Window::GetWidth() / 2, (double)Window::GetHeight() / 2);
 			first_press_ = false;
 		}
 		else if (!first_press_)

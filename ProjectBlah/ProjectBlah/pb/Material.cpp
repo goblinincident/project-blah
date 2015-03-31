@@ -51,7 +51,7 @@ namespace pb
 			REQUIREMENTS_ATTRIBUTE_UV | 
 			REQUIREMENTS_UNIFORM_MVP);
 		mat->SetShader("./data/shader/basic_texture.frag.glsl", SHADERTYPE_FRAGMENT,
-			REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE);
+			REQUIREMENTS_TEXTURE_0_DIFFUSE);
 		StandardMaterials::SimpleTexture = mat;
 	}
 
@@ -133,9 +133,9 @@ namespace pb
 			glUniformMatrix4fv(data->uniform_location, 1, GL_FALSE, value_ptr(*static_cast<mat4*>(data->data_pointer)));
 		}
 
-		if (requirement_flags_ & REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE)
+		if (requirement_flags_ & REQUIREMENTS_TEXTURE_0_DIFFUSE)
 		{
-			auto data = &r->uniform_config[REQUIREMENTS_UNIFORM_TEXTURE_DIFFUSE];
+			auto data = &r->uniform_config[REQUIREMENTS_TEXTURE_0_DIFFUSE];
 			glActiveTexture(data->uniform_location);
 		}
 
@@ -217,7 +217,10 @@ namespace pb
 			if (requirement_flags_ & flag)
 			{
 				auto data = &(*iter).second;
-
+				data->texture_id = TextureManager::GetTextureId(data->path);
+				data->width = TextureManager::GetTextureWidth(data->path);
+				data->height = TextureManager::GetTextureHeight(data->path);
+				
 			}
 		}
 

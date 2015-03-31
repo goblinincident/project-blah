@@ -19,16 +19,18 @@ namespace pb
 		Window();
 		~Window();
 
+		GLFWwindow* glfw_window_;
+
+		unsigned int width_;
+		unsigned int height_;
+		const char* title_;
+
 	public:
 
-		static const Window* GetWindow();
-
-
-		GLFWwindow* glfw_window;
-
-		int width;
-		int height;
-		const char* title;
+		static GLFWwindow* GetGlfwWindow();
+		static const unsigned int GetWidth();
+		static const unsigned int GetHeight();
+		static const char* GetTitle();
 	};
 
 }
